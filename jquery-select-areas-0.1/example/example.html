@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-    <link href="../../jquery-select-areas-0.1/resources/jquery.selectareas.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="../../jquery-select-areas-0.1/example/jquery-1.11.3.min.js" type="text/javascript"></script>
-	<script src="../../jquery-select-areas-0.1/jquery.selectareas.js" type="text/javascript"></script>
-    <script type="text/javascript">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<title>Demo Select Areas</title>
+		<link href="example.css" media="screen" rel="stylesheet" type="text/css" />
+		<link href="../resources/jquery.selectareas.css" media="screen" rel="stylesheet" type="text/css" />
+		<!--[if lte IE 8]><link href="../resources/jquery.selectareas.ie8.css" media="screen" rel="stylesheet" type="text/css" /> <![endif]-->
+		<script src="jquery-1.11.3.min.js" type="text/javascript"></script>
+		<script src="../jquery.selectareas.js" type="text/javascript"></script>
+		<script type="text/javascript">
 			$(document).ready(function () {
 				$('img#example').selectAreas({
 					minSize: [10, 10],
@@ -108,12 +105,32 @@
 			};
 
 		</script>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<h1>Demo Select Areas</h1>
+
+			<div class="image-decorator">
+				<img alt="Image principale" id="example" src="example.jpg"/>
+			</div>
+			<table>
+				<tr>
+					<td class="actions">
+						<input type="button" id="btnView" value="Display areas" class="actionOn" />
+						<input type="button" id="btnViewRel" value="Display relative" class="actionOn" />
+						<input type="button" id="btnNew" value="Add New" class="actionOn" />
+						<input type="button" id="btnNews" value="Add 2 New" class="actionOn" />
+						<input type="button" id="btnReset" value="Reset" class="actionOn" />
+						<input type="button" id="btnDestroy" value="Destroy" class="actionOn" />
+						<input type="button" id="btnCreate" value="Create" class="actionOff" />
+					</td>
+					<td>
+						<div id="output" class='output'> </div>
+					</td>
+				</tr>
+			</table>
+
+		</div>
+	</body>
 </html>

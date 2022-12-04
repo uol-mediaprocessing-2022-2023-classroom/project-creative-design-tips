@@ -76,7 +76,9 @@
               </section>
               <section class="box">
                 <h2>Ausgewähltes Bild (Input)</h2>
-                <img class="selectedImg" v-bind:src="selectedImage.url" />
+                <div class="image-decorator">
+                  <img alt="Image principale" id="example" src="../../../jquery-select-areas-0.1/example/example.jpg"/>
+                </div>
               </section>
               <section class="box">
                 <h2>Informationen über das Bild</h2>
@@ -721,5 +723,19 @@ button:hover {
   to {
     transform: scale(1)
   }
+}
+div.image-decorator {
+	-moz-border-radius : 5px 5px 5px 5px;
+	-moz-box-shadow : 0 0 6px #c8c8c8;
+	-webkit-border-radius : 5px 5px 5px 5px;
+	-webkit-box-shadow : 0 0 6px #c8c8c8;
+	background-color : #ffffff;
+	border : 1px solid #c8c8c8;
+	border-radius : 5px 5px 5px 5px;
+	box-shadow : 0 0 6px #c8c8c8;
+	display : inline-block;
+	padding : 5px 5px 5px 5px;
+	position: relative;
+	margin-bottom: 10px;
 }
 </style>
