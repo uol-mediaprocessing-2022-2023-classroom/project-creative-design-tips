@@ -4,7 +4,7 @@
       <div class="flex-container-footer">
         <section>
           <nav style="text-align: left">
-            <button class="btn-fwd btn-st btn-dark">Bild im Bild</button>
+            <button @click="hello()" id="btnBildImBild" class="btn-fwd btn-st btn-dark">Bild im Bild</button>
             <button class="btn-fwd btn-st btn-dark" type="button">Out of Image</button>
             <button class="btn-fwd btn-st btn-dark float-right"
               onclick="document.getElementById('loginField').style.display='block'" id="loginButton" type="button">{{ this.loginButtonText }}</button>
