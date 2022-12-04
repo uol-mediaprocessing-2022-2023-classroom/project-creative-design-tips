@@ -19,6 +19,12 @@
 <script>
 import HomePage from "./components/HomePage";
 import placeholder from "./assets/placeholder.jpg";
+// import selectAreasStylesheet from "jquery.selectareas.css";
+// import selectAreasScript1 from "//code.jquery.com/jquery-1.11.3.min.js";
+// import selectAreasScript2 from "jquery.selectareas.js";
+// import { loadScript } from "vue-plugin-load-script";
+// loadScript("//code.jquery.com/jquery-1.11.3.min.js");
+// loadScript("jquery.selectareas.js");
 
 export default {
   name: "App",
@@ -129,6 +135,27 @@ export default {
     resetGallery() {
       this.selectedImage = { url: placeholder, id: "placeholder" };
       this.currGallery = [];
+    },
+
+    hello() {
+      alert("hello")
+    },
+
+    selectArea(image) {
+      $(image).selectAreas({
+        maxAreas: 1,
+        minSize: [10, 10],
+        onChanged: debugQtyAreas,
+        width: 500,
+        areas: [
+          {
+            x: 10,
+            y: 20,
+            width: 60,
+            height: 100,
+          }
+        ]
+      });
     },
   },
 };
