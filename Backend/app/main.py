@@ -47,10 +47,10 @@ async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: B
 
     image = Image.open(img_path)
     cropped_image = image.crop((int(xStart), int(yStart), int(xEnd), int(yEnd)))
-    blurred_image = cropped_image.filter(ImageFilter.GaussianBlur(radius=20))
-    image.paste(blurred_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
+    blurred_image = image.filter(ImageFilter.GaussianBlur(radius=50))
+    blurred_image.paste(cropped_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
 
-    image.save(img_path)
+    blurred_image.save(img_path)
 
     # The background task runs after the File is returned completetly
     background_tasks.add_task(remove_file, img_path)
