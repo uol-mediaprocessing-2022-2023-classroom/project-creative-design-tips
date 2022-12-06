@@ -76,16 +76,16 @@
               </section>
               <section class="box">
                 <h2>Ausgewähltes Bild (Input)</h2>
-                <cropper
-                  :resizeImage="{ wheel: false }"
-                  class=""
-                  boundariesClass=""
-                  backgroundClass=""
-                  imageClass="selectedImg"
-                  priority="coordinates"
-		              :src="selectedImage.url"
-		              @change="change"
-	              />
+                  <cropper
+                    :resizeImage="{ wheel: false }"
+                    class=""
+                    boundariesClass=""
+                    backgroundClass=""
+                    imageClass="selectedImg"
+                    priority="coordinates"
+                    :src="selectedImage.url"
+                    @change="change"
+                  />
               </section>
               <section class="box">
                 <h2>Informationen über das Bild</h2>
@@ -204,12 +204,6 @@ export default {
       loginButtonText: "LOGIN",
       isLoggedIn: false,
       coordinates: "",
-      canvasSize: {
-        minHeight: 0,
-		    minWidth: 0,
-		    maxHeight: 200,
-		    maxWidth: 200,
-      },
     };
   },
 
@@ -227,7 +221,6 @@ export default {
       this.coordinates = coordinates;
       console.log("xStart:", this.coordinates.left, " yStart:", this.coordinates.top, " xEnd:",
       (this.coordinates.left + this.coordinates.width), " yEnd:", (this.coordinates.top + this.coordinates.height));
-      console.log(this.selectedImage);
 		},
 
     /*
@@ -380,6 +373,10 @@ export default {
   },
 
   computed: {
+    styleMethod() {
+      return {'maxHeight': this.canvasHeight }
+    },
+
     /*
         The numer of images within currGallery can dynamically change after the DOM is loaded, since the size of the image gallery depends on it
         it's important for it to be updated within the DOM aswell. By using computed values this is not a problem since Vue handles any updates to such
