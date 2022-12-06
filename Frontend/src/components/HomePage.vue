@@ -76,7 +76,11 @@
               </section>
               <section class="box">
                 <h2>Ausgewähltes Bild (Input)</h2>
-                <img class="selectedImg" v-bind:src="selectedImage.url" />
+                <cropper
+                  class="selectedImg"
+		              :src="selectedImage.url"
+		              @change="change"
+	              />
               </section>
               <section class="box">
                 <h2>Informationen über das Bild</h2>
@@ -87,7 +91,7 @@
                   </button>
 
                   <button class="basicButton" @click="getBlur(selectedImage.id)">
-                    Apply Blur
+                    Effekt anwenden
                   </button>
 
                   <div>
@@ -169,6 +173,8 @@
 </template>
 
 <script>
+import { Cropper } from 'vue-advanced-cropper';
+import 'vue-advanced-cropper/dist/style.css';
 
 window.onclick = function(event) {
     if (event.target == document.getElementById('loginField')) {
@@ -178,6 +184,10 @@ window.onclick = function(event) {
 
 export default {
   name: "HomePage",
+
+  components: {
+		Cropper,
+  },
 
   data() {
     return {
@@ -197,6 +207,13 @@ export default {
   },
 
   methods: {
+    /*
+      is called on every cropping change of an image.
+    */
+    change({ coordinates, canvas }) {
+			console.log(coordinates, canvas);
+		},
+
     /*
       Emit a loadImages event.
     */
