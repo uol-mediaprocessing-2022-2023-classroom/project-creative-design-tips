@@ -220,7 +220,7 @@ export default {
       @param selectedId The ID of the selected image.
     */
     getBlur(selectedId) {
-      this.$emit("getBlur", selectedId, this.cldId);
+      this.$emit("getBlur", selectedId, this.cldId, 500, 500, 1500, 1500);
     },
 
     /*

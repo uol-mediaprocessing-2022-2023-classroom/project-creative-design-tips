@@ -110,9 +110,9 @@ export default {
 
     @param selectedId ID of the image to be blurred.
     */
-    async getBlur(selectedId, cldId) {
+    async getBlur(selectedId, cldId, xStart, yStart, xEnd, yEnd) {
       let localUrl = "http://127.0.0.1:8000/get-blur";
-      let url = localUrl + "/" + cldId + "/" + selectedId;
+      let url = localUrl + "/" + cldId + "/" + selectedId + '/' + xStart + '/' + yStart + '/' + xEnd + '/' + yEnd;
 
       let blurImg = await fetch(url, {
         method: "get",

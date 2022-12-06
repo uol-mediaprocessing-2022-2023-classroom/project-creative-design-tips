@@ -8,6 +8,7 @@ import os
 from starlette.background import BackgroundTasks
 import urllib.request, urllib.parse
 
+
 app = FastAPI()
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -31,19 +32,25 @@ def home():
 
 # Endpoint for retrieving a blurred version of an image
 # The image is fetched from the URL in the post body and a blur is applied to it, the result is returned
-@app.get("/get-blur/{cldId}/{imgId}")
-async def get_blur(cldId, imgId, background_tasks: BackgroundTasks):
+@app.get("/get-blur/{cldId}/{imgId}/{xStart}/{yStart}/{xEnd}/{yEnd}")
+async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: BackgroundTasks):
 
-    img_path = 'app/bib/' + imgId + ".jpg"
+    img_path = 'app/bib/' + imgId + ".png"
     image_url = "https://tcmp.photoprintit.com/api/photos/" + imgId + ".org?size=original&errorImage=false&cldId=" + cldId + "&clientVersion=0.0.0-uni_webapp_demo"
 
     urllib.request.urlretrieve(image_url, img_path)
 
-    blurImage = Image.open(img_path)
-    # Here I use the Pillow library to apply a simple box blur on the fetched image, alternatively OpenCV can be used
-    # instead of Pillow
-    blurImage = blurImage.filter(ImageFilter.BoxBlur(10))
-    blurImage.save(img_path)
+    print('xStart: ' + xStart)
+    print('yStart: ' + yStart)
+    print('xEnd: ' + xEnd)
+    print('yEnd: ' + yEnd)
+
+    image = Image.open(img_path)
+    cropped_image = image.crop((int(xStart), int(yStart), int(xEnd), int(yEnd)))
+    blurred_image = cropped_image.filter(ImageFilter.GaussianBlur(radius=20))
+    image.paste(blurred_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
+
+    image.save(img_path)
 
     # The background task runs after the File is returned completetly
     background_tasks.add_task(remove_file, img_path)
