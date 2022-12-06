@@ -77,7 +77,12 @@
               <section class="box">
                 <h2>Ausgewähltes Bild (Input)</h2>
                 <cropper
-                  class="selectedImg"
+                  :resizeImage="{ wheel: false }"
+                  class=""
+                  boundariesClass=""
+                  backgroundClass=""
+                  imageClass="selectedImg"
+                  priority="coordinates"
 		              :src="selectedImage.url"
 		              @change="change"
 	              />
@@ -198,6 +203,13 @@ export default {
       awaitingLoginResponse: false,
       loginButtonText: "LOGIN",
       isLoggedIn: false,
+      coordinates: "",
+      canvasSize: {
+        minHeight: 0,
+		    minWidth: 0,
+		    maxHeight: 200,
+		    maxWidth: 200,
+      },
     };
   },
 
@@ -212,6 +224,10 @@ export default {
     */
     change({ coordinates, canvas }) {
 			console.log(coordinates, canvas);
+      this.coordinates = coordinates;
+      console.log("xStart:", this.coordinates.left, " yStart:", this.coordinates.top, " xEnd:",
+      (this.coordinates.left + this.coordinates.width), " yEnd:", (this.coordinates.top + this.coordinates.height));
+      console.log(this.selectedImage);
 		},
 
     /*
@@ -237,7 +253,8 @@ export default {
       @param selectedId The ID of the selected image.
     */
     getBlur(selectedId) {
-      this.$emit("getBlur", selectedId, this.cldId, 500, 500, 1500, 1500);
+      this.$emit("getBlur", selectedId, this.cldId, this.coordinates.left, this.coordinates.top, 
+      (this.coordinates.left + this.coordinates.width), (this.coordinates.top + this.coordinates.height));
     },
 
     /*

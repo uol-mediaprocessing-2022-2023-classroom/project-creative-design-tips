@@ -37,6 +37,7 @@ async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: B
 
     img_path = 'app/bib/' + imgId + ".png"
     image_url = "https://tcmp.photoprintit.com/api/photos/" + imgId + ".org?size=original&errorImage=false&cldId=" + cldId + "&clientVersion=0.0.0-uni_webapp_demo"
+    img_path2 = "app/bib/image.png"
 
     urllib.request.urlretrieve(image_url, img_path)
 
@@ -49,6 +50,9 @@ async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: B
     cropped_image = image.crop((int(xStart), int(yStart), int(xEnd), int(yEnd)))
     blurred_image = image.filter(ImageFilter.GaussianBlur(radius=50))
     blurred_image.paste(cropped_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
+
+    if not os.path.exists(img_path2):
+        blurred_image.save(img_path2)
 
     blurred_image.save(img_path)
 
