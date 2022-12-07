@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, Path, Body, Query, File
 from fastapi.responses import FileResponse
-from PIL import Image, ImageFilter
+from PIL import Image, ImageOps, ImageFilter
 import ssl
 import os
 from starlette.background import BackgroundTasks
@@ -45,10 +45,13 @@ async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: B
     print('xEnd: ' + xEnd)
     print('yEnd: ' + yEnd)
 
+    border = 15;
+
     image = Image.open(img_path)
     cropped_image = image.crop((int(xStart), int(yStart), int(xEnd), int(yEnd)))
+    cropped_image = ImageOps.expand(cropped_image, border=border, fill='white')
     blurred_image = image.filter(ImageFilter.GaussianBlur(radius=50))
-    blurred_image.paste(cropped_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
+    blurred_image.paste(cropped_image, (int(xStart) - border, int(yStart) - border, int(xEnd) + border, int(yEnd) + border))
 
     blurred_image.save(img_path)
 
