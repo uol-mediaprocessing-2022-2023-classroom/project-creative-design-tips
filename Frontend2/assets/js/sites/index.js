@@ -1,3 +1,8 @@
+const { Modal } = require("bootstrap");
+import { Gallery } from './../partials/gallery.js';
+import { loadImages } from './../partials/cewe-api.js'
+import { Cewe } from '../partials/cewe.js';
+
 let clientId = null;
 let isLoggedIn = false;
 let userName = "";
@@ -5,17 +10,27 @@ let email = document.getElementById('email');
 let pw = document.getElementById('password');
 let loginButton = document.getElementById('loginButton');
 let loginView = document.getElementById('login');
-let usernNameField = document.getElementById('userName');
+let userNameField = document.getElementById('userName');
+let loginModalButton = document.getElementById('loginModalButton');
+let loginModal = new Modal(document.getElementById('loginModal'));
+let loadImagesButton = document.getElementById('loadImagesbutton');
+let gallery = new Gallery(document.getElementById('image-gallery'));
+let cewe = null;
 
-loginButton.addEventListener('click',login);
+loginButton.addEventListener('click', login);
+loginModalButton.addEventListener('click', () => {
+    if (!loginModalButton.hasAttribute('data-bs-toggle')) {
+        login();
+    }
+});
 
 async function login() {
 
     let status = 0;
 
     if (isLoggedIn) {
-        alert("works")
         logout();
+        toggleLoginLogout();
         return;
     }
 
@@ -56,17 +71,53 @@ async function login() {
         return;
     }
 
-    cldId = response.session.cldId;
+    clientId = response.session.cldId;
+    cewe = new Cewe(clientId, gallery);
     userName = response.user.firstname;
-    loginView.style.display = 'none';
-    loginButton.innerHTML = "Logout";
-    usernNameField.innerHTML = userName;
-    userName.style.display = "";
+    userNameField.innerHTML = userName;
+    toggleLoginLogout();
     isLoggedIn = true;
 }
 
+loadImagesButton.addEventListener('click', () => {
+    if (clientId != null) { cewe.loadImages(); }
+});
+
+document.body.addEventListener('click', event => {
+    if (event.target.classList.contains('select-image')) {
+        handleSelectCeweImage(event.target);
+    }
+});
+
+async function handleSelectCeweImage(element) {
+    let imageData = gallery.getImageData(element.dataset.id);
+    document.getElementById('selectedImage').src = imageData.data.url;
+    document.getElementById('selectedImage-name').innerText = imageData.data.name;
+    document.getElementById('selectedImage-avgColor').innerText = imageData.data.avgColor;
+
+    // Load High-Resolution
+    let highresolution = await cewe.fetchHighResolution(imageData.data.id);
+    document.getElementById('selectedImage').src = highresolution.url;
+}
+
+
 function logout() {
-    cldId = ""; 
+    clientId = ""; 
     userName = "";
     loginView.style.display = '';
+}
+
+function toggleLoginLogout() {
+    if (userNameField.classList.contains('d-none')) {
+        userNameField.classList.remove('d-none');
+        loginModalButton.innerText = 'Logout';
+        loginModalButton.removeAttribute('data-bs-toggle');
+        loginModalButton.removeAttribute('data-bs-target');
+        loginModal.hide();
+    } else {
+        userNameField.classList.add('d-none');
+        loginModalButton.innerText = 'Login';
+        loginModalButton.setAttribute('data-bs-toggle', 'modal')
+        loginModalButton.setAttribute('data-bs-target', '#loginModal');
+    }
 }

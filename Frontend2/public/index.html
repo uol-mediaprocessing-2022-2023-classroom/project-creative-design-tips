@@ -19,7 +19,7 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <span id="userName" class="navbar-text">
+                        <span id="userName" class="navbar-text d-none">
                             Test
                         </span>
                         <li class="nav-item">
@@ -29,47 +29,8 @@
                 </div>
             </div>
         </nav>
-        <div class="headerField">
-            <div class="flex-container-footer">
-                <section>
-                    <nav style="text-align: left">
-                        <button class="btn-fwd btn-st btn-dark">Bild im Bild</button>
-                        <button class="btn-fwd btn-st btn-dark" type="button">Out of Image</button>
-                        <button class="btn-fwd btn-st btn-dark float-right"
-                        onclick="document.getElementById('loginField').style.display='block'" type="button">{{ this.loginButtonText }}</button>
-                    </nav>
-                </section>
-            </div>
-        </div>
         <div class="selectedImageField">
             <div class="selectedImageContainer">
-                <div id="loginField" class="loginField modal">
-                    <form class="modal-content animate">
-                        <div class="imgcontainer">
-                            <span onclick="document.getElementById('loginField').style.display='none'" class="close"
-                                title="Close Modal">&times;</span>
-                        </div>
-                        <h1 v-if="!isUserNameEmpty" style="margin-right: 15px">
-                            {{ this.userName }}
-                        </h1>
-                        <v-btn
-                            class="clickable loginBtn"
-                            :disabled="awaitingLoginResponse"
-                            color="#d6d8e4"
-                            @click="login"
-                        >
-                            <v-progress-circular
-                            indeterminate
-                            color="grey lighten-5"
-                            v-if="awaitingLoginResponse"
-                            ></v-progress-circular>
-                            <button style="display: flex" v-else>
-                            Login
-                            </button>
-                        </v-btn>
-                    </form>
-                </div>
-        
                 <div class="pagebody">
                     <article>
                         <div class="flex-container">
@@ -84,6 +45,7 @@
                             </section>
                             <section class="box">
                                 <h2>Ausgewähltes Bild (Input)</h2>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png" id="selectedImage" class="selectedImg">
                                 <cropper
                                 class="selectedImg"
                                     :src="selectedImage.url"
@@ -94,7 +56,7 @@
                                 <h2>Informationen über das Bild</h2>
                                 <div class="inputField">
                                     <input placeholder="Your CEWE cldID" class="idInput" v-model="cldId" />
-                                    <button class="basicButton" @click="loadImages(cldId)">
+                                    <button class="basicButton" id="loadImagesbutton" @click="loadImages(cldId)">
                                         Load Images
                                     </button>
                     
@@ -104,12 +66,8 @@
                     
                                     <div>
                                         <h3>Image Info:<br /></h3>
-                                        <p>
-                                        {{ imageInfo.name }}
-                                        </p>
-                                        <p>
-                                        {{ imageInfo.avgColor }}
-                                        </p>
+                                        <p id="selectedImage-name"></p>
+                                        <p id="selectedImage-avgColor"></p>
                                     </div>
                                 </div>
                             </section>
@@ -161,8 +119,8 @@
         </div>
     
         <div class="imageGalleryField">
-          <div>
-            <v-row>
+          <div class="row" id="image-gallery">
+            <!--<v-row>
               <v-col v-for="n in galleryImageNum" :key="n" class="d-flex child-flex" cols="2">
                 <v-img :src="currGallery[n - 1].url" aspect-ratio="1" max-height="200" max-width="200"
                   class="grey lighten-2" @click="updateSelected(currGallery[n - 1].id)">
@@ -173,7 +131,7 @@
                   </template>
                 </v-img>
               </v-col>
-            </v-row>
+            </v-row>-->
           </div>
           <button class="loadMoreBtn" @click="$emit('loadMore')">Load more</button>
         </div>

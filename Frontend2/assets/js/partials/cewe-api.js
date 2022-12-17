@@ -1,4 +1,6 @@
-async function loginUnused() {
+import { Gallery } from './../partials/gallery.js';
+
+export async function loginUnused() {
 
     if (!isLoggedIn) {
         logout();
@@ -111,24 +113,25 @@ function resetData() {
     this.$emit("resetGalery");
 }
 
-async function loadImages(cldId) {
+export async function loadImages(cldId, gallery) {
     // First fetch the ids of all the images on a users account, we need these in order to acquire the actual images in a given resolution
-    this.allImgData = await fetch(
+    const allImgData = await fetch(
       "https://tcmp.photoprintit.com/api/photos/all?orderDirection=asc&showHidden=false&showShared=false&includeMetadata=false",
       { headers: { cldId: cldId, clientVersion: "0.0.0-uni_webapp_demo" } }
     ).then((idResponse) => idResponse.json());
 
-    this.limit = 80;
-    this.loadedAmount = 0;
-    this.currGallery = [];
+    let limit = 80;
+    let loadedAmount = 0;
+    let currGallery = [];
 
     // Fetch the actual image urls and other image info using image IDs saved in allImgData
-    for (const photo of this.allImgData.photos) {
+    gallery.resetImages();
+    for (const photo of allImgData.photos) {
       // Stop once the limit is reached
-      if (this.loadedAmount >= this.limit) {
+      if (loadedAmount >= limit) {
         break;
       }
-      this.loadedAmount += 1;
+      loadedAmount += 1;
 
       const data = {};
       data.id = photo.id;
@@ -145,7 +148,7 @@ async function loadImages(cldId) {
           "&clientVersion=0.0.0-uni_webapp_demo"
       );
       data.url = imgResponse.url;
-      this.currGallery.push(data);
+      gallery.addImage(data);
     }
 }
 
@@ -154,7 +157,7 @@ async function loadImages(cldId) {
 
   @param slectedId ID of the selected image.
   */
-async function updateSelected(selectedId, cldId) {
+export async function updateSelected(selectedId, cldId) {
     // Fetch the url to the image selected by the user in it's original resolution
     const imgResponse = await fetch(
       "https://tcmp.photoprintit.com/api/photos/" +
@@ -180,7 +183,7 @@ async function updateSelected(selectedId, cldId) {
 
   @param selectedId ID of the image to be blurred.
   */
-async function getBlur(selectedId, cldId, xStart, yStart, xEnd, yEnd) {
+export async function getBlur(selectedId, cldId, xStart, yStart, xEnd, yEnd) {
     let localUrl = "http://127.0.0.1:8000/get-blur";
     let url = localUrl + "/" + cldId + "/" + selectedId + '/' + xStart + '/' + yStart + '/' + xEnd + '/' + yEnd;
 
