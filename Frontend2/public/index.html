@@ -3,38 +3,173 @@
         <link rel="stylesheet" href="build/app.css">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled">Disabled</a>
-                        </li>
-                    </ul>
+        <div class="headerField">
+            <div class="flex-container-footer">
+                <section>
+                    <nav style="text-align: left">
+                        <button class="btn-fwd btn-st btn-dark">Bild im Bild</button>
+                        <button class="btn-fwd btn-st btn-dark" type="button">Out of Image</button>
+                        <button class="btn-fwd btn-st btn-dark float-right"
+                        onclick="document.getElementById('loginField').style.display='block'" id="loginButton" type="button">{{ this.loginButtonText }}</button>
+                    </nav>
+                </section>
+            </div>
+        </div>
+        <div class="selectedImageField">
+            <div class="selectedImageContainer">
+                <div id="loginField" class="loginField modal">
+                    <form class="modal-content animate">
+                        <div class="imgcontainer">
+                            <span onclick="document.getElementById('loginField').style.display='none'" class="close"
+                                title="Close Modal">&times;</span>
+                        </div>
+            
+                        <div style="display: flex" v-if="isUserNameEmpty">
+                            <input
+                            required
+                            placeholder="Email"
+                            v-model="loginData.email"
+                            type="email"
+                            name="email"
+                            autocomplete="email"
+                            />
+                            <input
+                            required
+                            placeholder="Password"
+                            v-model="loginData.password"
+                            type="password"
+                            name="password"
+                            autocomplete="password"
+                            />
+                        </div>
+                        <h1 v-if="!isUserNameEmpty" style="margin-right: 15px">
+                            {{ this.userName }}
+                        </h1>
+                        <v-btn
+                            class="clickable loginBtn"
+                            :disabled="awaitingLoginResponse"
+                            color="#d6d8e4"
+                            @click="login"
+                        >
+                            <v-progress-circular
+                            indeterminate
+                            color="grey lighten-5"
+                            v-if="awaitingLoginResponse"
+                            ></v-progress-circular>
+                            <div style="display: flex" v-else>
+                            {{ this.loginButtonText }}
+                            </div>
+                        </v-btn>
+                    </form>
+                </div>
+        
+                <div class="pagebody">
+                    <article>
+                        <div class="flex-container">
+                            <section class="box">
+                                <h2>Navigation</h2>
+                                <div class="vertical-menu">
+                                    <a href="#" class="active">Home</a>
+                                    <a href="#">Bild auswählen</a>
+                                    <a href="#">Bildberreich auswählen</a>
+                                    <a href="#">Ausgabe</a>
+                                </div>
+                            </section>
+                            <section class="box">
+                                <h2>Ausgewähltes Bild (Input)</h2>
+                                <cropper
+                                class="selectedImg"
+                                    :src="selectedImage.url"
+                                    @change="change"
+                                />
+                            </section>
+                            <section class="box">
+                                <h2>Informationen über das Bild</h2>
+                                <div class="inputField">
+                                    <input placeholder="Your CEWE cldID" class="idInput" v-model="cldId" />
+                                    <button class="basicButton" @click="loadImages(cldId)">
+                                        Load Images
+                                    </button>
+                    
+                                    <button class="basicButton" @click="getBlur(selectedImage.id)">
+                                        Effekt anwenden
+                                    </button>
+                    
+                                    <div>
+                                        <h3>Image Info:<br /></h3>
+                                        <p>
+                                        {{ imageInfo.name }}
+                                        </p>
+                                        <p>
+                                        {{ imageInfo.avgColor }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="wide-box">
+                                <h2>Output</h2>
+                                <div class="image-flex-container">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Girl in a jacket">
+                                </div>
+                            </section>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </nav>
+        </div>
+    
+        <div class="imageGalleryField">
+          <div>
+            <v-row>
+              <v-col v-for="n in galleryImageNum" :key="n" class="d-flex child-flex" cols="2">
+                <v-img :src="currGallery[n - 1].url" aspect-ratio="1" max-height="200" max-width="200"
+                  class="grey lighten-2" @click="updateSelected(currGallery[n - 1].id)">
+                  <template v-slot:placeholder>
+                    <v-row class="fill-height ma-0" align="center" justify="center">
+                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
+              </v-col>
+            </v-row>
+          </div>
+          <button class="loadMoreBtn" @click="$emit('loadMore')">Load more</button>
+        </div>
         <div class="class">Hi im there</div>
         <script src="build/main.js"></script>
     </body>
