@@ -1,3 +1,120 @@
+async function login() {
+    if (this.isLoggedIn) {
+        this.logout();
+        return;
+    }
+
+    if (this.awaitingLoginResponse) {
+        return;
+    }
+    this.awaitingLoginResponse = true;
+
+    let loginData = this.loginData;
+    const requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            clientVersion: "0.0.1-medienVerDemo",
+            apiAccessKey: "84d5fff65156920a682f71f502f63966",
+        }, // this apiAccessKey is for testing
+        body: JSON.stringify({
+            login: loginData.email,
+            password: loginData.password,
+            deviceName: "Medienverarbeitung CEWE API Demo",
+        }),
+    };
+
+    let status = 0;
+    const response = await fetch(
+        "https://tcmp.photoprintit.com/api/account/session/",
+        requestOptions
+    ).then((response) => {
+        status = response.status;
+
+        if (!(status >= 200 && status <= 299)) {
+            this.awaitingLoginResponse = false;
+            // some broad status 'handling'
+            if (status == 500 || status == 405) {
+                alert("Internal error occured, try again later.");
+                return;
+            }
+            alert("Entered credinentials are incorrect.");
+            return;
+        }
+
+        this.awaitingLoginResponse = false;
+        return response.json();
+    });
+
+    if (response == null) {
+        return;
+    }
+
+    let cldId = response.session.cldId;
+    let userName = response.user.firstname;
+    this.loginData = {
+        email: "",
+        password: "",
+    };
+
+    this.loggedIn(cldId, userName);
+}
+  
+// Helper method called by login(), logs out the user.
+// Also resets saved website data.
+async function logout() {
+    if (!this.isLoggedIn) {
+        return;
+    }
+
+    const requestOptions = {
+        method: "DELETE",
+        headers: { cldId: this.cldId, clientVersion: "0.0.1-offismosaic" },
+    };
+
+    const response = await fetch(
+        "https://tcmp.photoprintit.com/api/account/session/?invalidateRefreshToken=true",
+        requestOptions
+    );
+    const status = response.status;
+    if (!(status >= 200 && status <= 299)) {
+        alert("Something went wrong during logout.");
+        this.loggedOut();
+        return;
+    }
+
+    this.loggedOut();
+}
+  
+// Helper method for saving user data in the browsers local storage.
+function loggedIn(cldId, userName) {
+    this.cldId = cldId;
+    this.isLoggedIn = true;
+    this.userName = userName;
+    localStorage.cldId = cldId;
+    localStorage.userName = userName;
+    localStorage.isLoggedIn = true;
+}
+  
+// Helper method for clearing user data from the browsers local storage.
+function loggedOut() {
+    localStorage.cldId = "";
+    localStorage.userName = "";
+    localStorage.isLoggedIn = false;
+    this.resetData();
+}
+  
+// Helper method for resetting saved data.
+function resetData() {
+    this.cldId = "";
+    this.isLoggedIn = false;
+    this.userName = "";
+    this.loginData = { email: "", password: "" };
+    this.imageInfo = { name: "", avgColor: "" };
+    this.awaitingLoginResponse = false;
+    this.$emit("resetGalery");
+}
+
 async function loadImages(cldId) {
     // First fetch the ids of all the images on a users account, we need these in order to acquire the actual images in a given resolution
     this.allImgData = await fetch(
