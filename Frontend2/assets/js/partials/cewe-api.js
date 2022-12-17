@@ -1,15 +1,10 @@
-async function login() {
-    if (this.isLoggedIn) {
-        this.logout();
+async function loginUnused() {
+
+    if (!isLoggedIn) {
+        logout();
         return;
     }
 
-    if (this.awaitingLoginResponse) {
-        return;
-    }
-    this.awaitingLoginResponse = true;
-
-    let loginData = this.loginData;
     const requestOptions = {
         method: "POST",
         headers: {
@@ -18,13 +13,14 @@ async function login() {
             apiAccessKey: "84d5fff65156920a682f71f502f63966",
         }, // this apiAccessKey is for testing
         body: JSON.stringify({
-            login: loginData.email,
-            password: loginData.password,
+            login: email,
+            password: pw,
             deviceName: "Medienverarbeitung CEWE API Demo",
         }),
     };
 
     let status = 0;
+
     const response = await fetch(
         "https://tcmp.photoprintit.com/api/account/session/",
         requestOptions
