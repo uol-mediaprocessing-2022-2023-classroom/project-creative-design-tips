@@ -20,10 +20,7 @@
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Bild im Bild</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Out of Image</a>
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="loginModalButton">Login</a>
                         </li>
                     </ul>
                 </div>
@@ -196,7 +193,26 @@
           </div>
           <button class="loadMoreBtn" @click="$emit('loadMore')">Load more</button>
         </div>
-        <div class="class">Hi im there</div>
+
+
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="build/main.js"></script>
     </body>
 </html>
