@@ -17,11 +17,21 @@ let loginModal = new Modal(document.getElementById('loginModal'));
 let loadImagesButton = document.getElementById('loadImagesbutton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
 let cewe = null;
+let cropXStart = null;
+let cropYStart = null;
+let cropXEnd = null;
+let cropYEnd = null;
 
 var croppr = new Croppr('#selectedImage', {
+    // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
     onCropEnd: function(data) {
-        console.log(data.x, data.y, data.width, data.height);
-      }
+        cropXStart = data.x;
+        cropYStart = data.y;
+        cropXEnd = (data.x + data.width);
+        cropYEnd = (data.y + data.height);
+        console.log(cropXStart, cropYStart, cropXEnd, cropYEnd);
+      },
+      startSize: [80,80]
   });
 
 loginButton.addEventListener('click', login);
@@ -98,7 +108,7 @@ document.body.addEventListener('click', event => {
 
 async function handleSelectCeweImage(element) {
     let imageData = gallery.getImageData(element.dataset.id);
-    croppr.setImage(imageData.data.url);
+    // croppr.setImage(imageData.data.url);
     document.getElementById('selectedImage-name').innerText = imageData.data.name;
     document.getElementById('selectedImage-avgColor').innerText = imageData.data.avgColor;
 
