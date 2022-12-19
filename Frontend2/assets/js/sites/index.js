@@ -1,4 +1,5 @@
 const { Modal } = require("bootstrap");
+var Croppr = require('croppr');
 import { Gallery } from './../partials/gallery.js';
 import { loadImages } from './../partials/cewe-api.js'
 import { Cewe } from '../partials/cewe.js';
@@ -16,6 +17,12 @@ let loginModal = new Modal(document.getElementById('loginModal'));
 let loadImagesButton = document.getElementById('loadImagesbutton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
 let cewe = null;
+
+var croppr = new Croppr('#selectedImage', {
+    onCropEnd: function(data) {
+        console.log(data.x, data.y, data.width, data.height);
+      }
+  });
 
 loginButton.addEventListener('click', login);
 loginModalButton.addEventListener('click', () => {
@@ -91,13 +98,13 @@ document.body.addEventListener('click', event => {
 
 async function handleSelectCeweImage(element) {
     let imageData = gallery.getImageData(element.dataset.id);
-    document.getElementById('selectedImage').src = imageData.data.url;
+    croppr.setImage(imageData.data.url);
     document.getElementById('selectedImage-name').innerText = imageData.data.name;
     document.getElementById('selectedImage-avgColor').innerText = imageData.data.avgColor;
 
     // Load High-Resolution
     let highresolution = await cewe.fetchHighResolution(imageData.data.id);
-    document.getElementById('selectedImage').src = highresolution.url;
+    croppr.setImage(highresolution.url);
 }
 
 
