@@ -7,6 +7,7 @@ import ssl
 import os
 from starlette.background import BackgroundTasks
 import urllib.request, urllib.parse
+import uuid
 
 
 app = FastAPI()
@@ -32,13 +33,13 @@ def home():
 
 # Endpoint for retrieving a blurred version of an image
 # The image is fetched from the URL in the post body and a blur is applied to it, the result is returned
-@app.get("/get-blur/{cldId}/{imgId}/{xStart}/{yStart}/{xEnd}/{yEnd}")
-async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: BackgroundTasks):
+@app.get("/get-blur/")
+async def get_blur(url, xStart, yStart, xEnd, yEnd, background_tasks: BackgroundTasks):
+    img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
 
-    img_path = 'app/bib/' + imgId + ".png"
-    image_url = "https://tcmp.photoprintit.com/api/photos/" + imgId + ".org?size=original&errorImage=false&cldId=" + cldId + "&clientVersion=0.0.0-uni_webapp_demo"
-
-    urllib.request.urlretrieve(image_url, img_path)
+    print(img_path)
+    print(url)
+    urllib.request.urlretrieve(url, img_path)
 
     print('xStart: ' + xStart)
     print('yStart: ' + yStart)

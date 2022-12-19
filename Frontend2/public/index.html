@@ -45,18 +45,18 @@
                             </section>
                             <section class="box">
                                 <h2>Ausgewähltes Bild (Input)</h2>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png"
+                                <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
                                  id="selectedImage" class="selectedImg">
                             </section>
                             <section class="box">
                                 <h2>Informationen über das Bild</h2>
                                 <div class="inputField">
                                     <input placeholder="Your CEWE cldID" class="idInput" v-model="cldId" />
-                                    <button class="basicButton" id="loadImagesbutton" @click="loadImages(cldId)">
+                                    <button class="basicButton" id="loadImagesbutton">
                                         Load Images
                                     </button>
                     
-                                    <button class="basicButton" @click="getBlur(selectedImage.id)">
+                                    <button class="basicButton" id="addEffectButton">
                                         Effekt anwenden
                                     </button>
                     
@@ -72,7 +72,8 @@
                                 <div class="image-flex-container">
                                 <img class="image-display"
                                     src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
+                                    alt="Girl in a jacket"
+                                    id="test-output">
                                 <img class="image-display"
                                     src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
                                     alt="Girl in a jacket">

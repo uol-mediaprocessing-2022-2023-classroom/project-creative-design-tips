@@ -3,6 +3,7 @@ var Croppr = require('croppr');
 import { Gallery } from './../partials/gallery.js';
 import { loadImages } from './../partials/cewe-api.js'
 import { Cewe } from '../partials/cewe.js';
+import { Backend } from '../partials/backend.js';
 
 let clientId = null;
 let isLoggedIn = false;
@@ -15,12 +16,15 @@ let userNameField = document.getElementById('userName');
 let loginModalButton = document.getElementById('loginModalButton');
 let loginModal = new Modal(document.getElementById('loginModal'));
 let loadImagesButton = document.getElementById('loadImagesbutton');
+let addEffectButton = document.getElementById('addEffectButton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
 let cewe = null;
 let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
 let cropYEnd = null;
+let backend = new Backend();
+let selectedImage = "https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png";
 
 var croppr = new Croppr('#selectedImage', {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
@@ -100,6 +104,15 @@ loadImagesButton.addEventListener('click', () => {
     if (clientId != null) { cewe.loadImages(); }
 });
 
+addEffectButton.addEventListener('click', () => {
+    loadBlur();
+})
+
+async function loadBlur() {
+    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
+    document.getElementById('test-output').src = newUrl;
+}
+
 document.body.addEventListener('click', event => {
     if (event.target.classList.contains('select-image')) {
         handleSelectCeweImage(event.target);
@@ -115,6 +128,7 @@ async function handleSelectCeweImage(element) {
     // Load High-Resolution
     let highresolution = await cewe.fetchHighResolution(imageData.data.id);
     croppr.setImage(highresolution.url);
+    selectedImage = highresolution.url;
 }
 
 
@@ -142,5 +156,5 @@ function toggleLoginLogout() {
 
 function resetData() {
     gallery.resetImages()
-    croppr.setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png");
+    croppr.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
 }
