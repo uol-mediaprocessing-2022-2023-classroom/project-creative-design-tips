@@ -7,7 +7,7 @@ class Cewe {
     async loadImages() {
         // First fetch the ids of all the images on a users account, we need these in order to acquire the actual images in a given resolution
         const allImgData = await fetch(
-          "https://tcmp.photoprintit.com/api/photos/all?orderDirection=asc&showHidden=false&showShared=false&includeMetadata=false",
+          "https://cmp.photoprintit.com/api/photos/all?orderDirection=asc&showHidden=false&showShared=false&includeMetadata=false",
           { headers: { cldId: this.clientId, clientVersion: "0.0.0-uni_webapp_demo" } }
         ).then((idResponse) => idResponse.json());
     
@@ -31,7 +31,7 @@ class Cewe {
           data.type = photo.mimeType;
     
           const imgResponse = await fetch(
-            "https://tcmp.photoprintit.com/api/photos/" +
+            "https://cmp.photoprintit.com/api/photos/" +
               photo.id +
               ".jpg?size=300&errorImage=false&cldId=" +
               this.clientId +
@@ -45,7 +45,7 @@ class Cewe {
     async fetchHighResolution(selectedId) {
         // Fetch the url to the image selected by the user in it's original resolution
         const imgResponse = await fetch(
-          "https://tcmp.photoprintit.com/api/photos/" +
+          "https://cmp.photoprintit.com/api/photos/" +
             selectedId +
             ".org?size=original&errorImage=false&cldId=" +
             this.clientId +

@@ -24,7 +24,7 @@ export async function loginUnused() {
     let status = 0;
 
     const response = await fetch(
-        "https://tcmp.photoprintit.com/api/account/session/",
+        "https://cmp.photoprintit.com/api/account/session/",
         requestOptions
     ).then((response) => {
         status = response.status;
@@ -71,7 +71,7 @@ async function logout() {
     };
 
     const response = await fetch(
-        "https://tcmp.photoprintit.com/api/account/session/?invalidateRefreshToken=true",
+        "https://cmp.photoprintit.com/api/account/session/?invalidateRefreshToken=true",
         requestOptions
     );
     const status = response.status;
