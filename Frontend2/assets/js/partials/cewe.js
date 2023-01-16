@@ -2,6 +2,7 @@ class Cewe {
     constructor(clientId, gallery) {
         this.clientId = clientId;
         this.gallery = gallery;
+        this.loadImages();
     }
 
     async loadImages() {

@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Request, Path, Body, Query, File
+from fastapi import FastAPI, Request, Path, Body, Query, File, UploadFile
 from fastapi.responses import FileResponse
 from PIL import Image, ImageFilter
 import ssl
@@ -34,13 +34,13 @@ def home():
 
 # Endpoint for retrieving a blurred version of an image
 # The image is fetched from the URL in the post body and a blur is applied to it, the result is returned
-@app.get("/get-blur/")
-async def get_blur(url, xStart, yStart, xEnd, yEnd, background_tasks: BackgroundTasks):
+@app.post("/get-blur/")
+async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...)):
     img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
+    contents = await file.read()
 
-    print(img_path)
-    print(url)
-    urllib.request.urlretrieve(url, img_path)
+    with open(f"{img_path}", "wb") as f:
+        f.write(contents)
 
     print('xStart: ' + xStart)
     print('yStart: ' + yStart)
