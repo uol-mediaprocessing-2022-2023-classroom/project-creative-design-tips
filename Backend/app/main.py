@@ -1,12 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Request, Path, Body, Query, File
+from fastapi import FastAPI, Request, Path, Body, Query, File, UploadFile
 from fastapi.responses import FileResponse
 from PIL import Image, ImageFilter
 import ssl
 import os
 from starlette.background import BackgroundTasks
 import urllib.request, urllib.parse
+import uuid
 
 
 app = FastAPI()
@@ -14,8 +15,9 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 # List of URLs which have access to this API
 origins = [
-    "https://localhost:8080",
+    "*",
     "http://localhost:8080/",
+    "http://127.0.0.1:8080/",
 ]
 
 app.add_middleware(
@@ -32,13 +34,13 @@ def home():
 
 # Endpoint for retrieving a blurred version of an image
 # The image is fetched from the URL in the post body and a blur is applied to it, the result is returned
-@app.get("/get-blur/{cldId}/{imgId}/{xStart}/{yStart}/{xEnd}/{yEnd}")
-async def get_blur(cldId, imgId, xStart, yStart, xEnd, yEnd, background_tasks: BackgroundTasks):
+@app.post("/get-blur/")
+async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...)):
+    img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
+    contents = await file.read()
 
-    img_path = 'app/bib/' + imgId + ".png"
-    image_url = "https://tcmp.photoprintit.com/api/photos/" + imgId + ".org?size=original&errorImage=false&cldId=" + cldId + "&clientVersion=0.0.0-uni_webapp_demo"
-
-    urllib.request.urlretrieve(image_url, img_path)
+    with open(f"{img_path}", "wb") as f:
+        f.write(contents)
 
     print('xStart: ' + xStart)
     print('yStart: ' + yStart)
