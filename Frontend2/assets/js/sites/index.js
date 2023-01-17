@@ -110,8 +110,15 @@ addEffectButton.addEventListener('click', () => {
 
 async function loadBlur() {
     let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
-    document.getElementById('test-output').src = newUrl;
+    document.getElementById('default-output').querySelector('img').src = newUrl;
 }
+
+document.body.addEventListener('click', event => {
+    if (event.target.classList.contains('download-btn')) {
+        let url = event.target.parentElement.querySelector('img').src;
+        downloadImage(url, 'image');
+    }
+});
 
 document.body.addEventListener('click', event => {
     if (event.target.classList.contains('select-image')) {
@@ -131,6 +138,38 @@ async function handleSelectCeweImage(element) {
     selectedImage = highresolution.url;
 }
 
+async function downloadImage(selectedUrl, fileName) {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+
+    let imageData = await fetch(selectedUrl, {
+      method: "get"
+    })
+      .then((response) => response.blob())
+      .then((imageBlob) => {
+        return imageBlob;
+    });
+
+    let fileType = imageData.type;
+    let fileEnding = null;
+
+    if (fileType == 'image/png') {
+        fileEnding = 'png';
+    } else if (fileType == 'image/jpeg') {
+        fileEnding = 'jpeg';
+    }
+
+    if (fileEnding == null) {
+        return;
+    }
+
+    let url = window.URL.createObjectURL(imageData);
+    a.href = url;
+    a.download = fileName + fileEnding;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
 
 function logout() {
     clientId = ""; 

@@ -47,14 +47,6 @@
     margin-left: 10px;
   }
   
-  .basicButton {
-    background-color: rgb(226, 215, 215);
-    padding: 0px 4px 0px 4px;
-    margin-right: 5px;
-    border-radius: 3px;
-    width: 150px;
-  }
-  
   .idInput {
     margin-right: 8px;
     border: 1px solid #000;
@@ -88,11 +80,6 @@
   }
   
   .loadMoreBtn {
-    background-color: #a7a7a7;
-    border-radius: 6px;
-    padding-left: 5px;
-    padding-right: 5px;
-    width: 100px;
     align-self: center;
     margin-top: 10px;
   }
@@ -120,21 +107,33 @@
     padding-bottom: 20px;
   }
   
-  .image-flex-container {
+.image-flex-container {
     justify-content: center;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     max-height: 400px;
     overflow-y: auto;
-  }
-  
-  .image-display {
-    padding: 1%;
-    object-fit: cover;
-    width: 25%;
-    height: 25%;
-  }
+
+    .output-image {
+        padding: 1%;
+        object-fit: cover;
+        width: 25%;
+        height: 25%;
+        position: relative;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        button {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+        }
+    }
+}
   
   .box,
   .wide-box {

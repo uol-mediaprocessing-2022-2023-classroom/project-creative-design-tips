@@ -5,7 +5,7 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Unser Projektname</a>
+                <a class="navbar-brand" href="#">CreativeDesignTips</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -52,11 +52,11 @@
                                 <h2>Informationen über das Bild</h2>
                                 <div class="inputField">
                                     <input placeholder="Your CEWE cldID" class="idInput" v-model="cldId" />
-                                    <button class="basicButton" id="loadImagesbutton">
+                                    <button class="btn btn-outline-primary" id="loadImagesbutton">
                                         Load Images
                                     </button>
                     
-                                    <button class="basicButton" id="addEffectButton">
+                                    <button class="btn btn-primary" id="addEffectButton">
                                         Effekt anwenden
                                     </button>
                     
@@ -70,43 +70,67 @@
                             <section class="wide-box">
                                 <h2>Output</h2>
                                 <div class="image-flex-container">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket"
-                                    id="test-output">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
-                                <img class="image-display"
-                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
+                                    <div class="output-image" id="default-output">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                            <button type="button" class="btn btn-danger btn-sm download-btn">Download</button>
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
+                                    <div class="output-image">
+                                        <img class="image-display"
+                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                            alt="Girl in a jacket">
+                                    </div>
                                 </div>
                             </section>
                         </div>
@@ -130,7 +154,7 @@
               </v-col>
             </v-row>-->
           </div>
-          <button class="loadMoreBtn" @click="$emit('loadMore')">Load more</button>
+          <button class="loadMoreBtn btn btn-primary" @click="$emit('loadMore')">Load more</button>
         </div>
 
 
