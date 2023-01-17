@@ -71,7 +71,7 @@ class myAugmentation(object):
 			self.doAugmentate(img, savedir, str(i))
 
 
-	def doAugmentate(self, img, save_to_dir, save_prefix, batch_size=1, save_format='tif', imgnum=14):
+	def doAugmentate(self, img, save_to_dir, save_prefix, batch_size=1, save_format='tif', imgnum=8):
 
 		"""
 		augmentate one image
@@ -200,19 +200,23 @@ class dataProcess(object):
 		print('Saving to imgs_test.npy files done.')
 
 	def load_train_data(self):
-		print('-'*30)
+		print('-' * 30)
 		print('load train images...')
-		print('-'*30)
-		imgs_train = np.load(self.npy_path+"/imgs_train.npy")
-		imgs_mask_train = np.load(self.npy_path+"/imgs_mask_train.npy")
+		print('-' * 30)
+		imgs_train = np.load(self.npy_path + "/imgs_train.npy")
+		imgs_mask_train = np.load(self.npy_path + "/imgs_mask_train.npy")
+
 		imgs_train = imgs_train.astype('float32')
 		imgs_mask_train = imgs_mask_train.astype('float32')
 		imgs_train /= 255
-		#mean = imgs_train.mean(axis = 0)
-		#imgs_train -= mean	
+
+		mean = imgs_train.mean(axis = 0)
+		imgs_train -= mean	
+
 		imgs_mask_train /= 255
 		imgs_mask_train[imgs_mask_train > 0.5] = 1
 		imgs_mask_train[imgs_mask_train <= 0.5] = 0
+
 		return imgs_train,imgs_mask_train
 
 	def load_test_data(self):

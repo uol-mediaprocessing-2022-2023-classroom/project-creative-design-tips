@@ -7,6 +7,7 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 from data import *
+from augment import *
 
 class myUnet(object):
 
@@ -148,6 +149,22 @@ class myUnet(object):
 
 		return model
 
+	def add_sample_weights(image, label):
+		# The weights for each class, with the constraint that:
+		#     sum(class_weights) == 1.0
+		class_weights = tf.constant([2.0, 2.0, 1.0])
+		class_weights = class_weights/tf.reduce_sum(class_weights)
+
+		# Create an image of `sample_weights` by using the label at each pixel as an 
+		# index into the `class weights` .
+		sample_weights = tf.gather(class_weights, indices=tf.cast(label, tf.int32))
+
+		return image, label, sample_weights
+
+	def normalize(input_image, input_mask):
+		input_image = tf.cast(input_image, tf.float32) / 255.0
+		input_mask -= 1
+		return input_image, input_mask
 
 	def train(self):
 
@@ -158,12 +175,36 @@ class myUnet(object):
 		print("got unet")
 
 		model_checkpoint = ModelCheckpoint('unet.hdf5', monitor='loss',verbose=1, save_best_only=True)
+		print('Preparing data...')
+
+		train_images = tf.data.Dataset.from_tensor_slices((imgs_train, imgs_mask_train))
+
+		train_batches = (
+			train_images
+			.cache()
+			.shuffle(1000)
+			.batch(4)
+			#.map(Augment())
+			.prefetch(buffer_size=tf.data.AUTOTUNE))
+
 		print('Fitting model...')
-		model.fit(imgs_train, imgs_mask_train, batch_size=4, epochs=20, verbose=1,validation_split=0.2, shuffle=True, callbacks=[model_checkpoint])
+		model.fit(train_batches.map(self.add_sample_weights), epochs=3, verbose=1, shuffle=True, callbacks=[model_checkpoint])#,validation_split=0.2, batchSize=4 .map(self.add_sample_weights)
 
 		print('predict test data')
 		imgs_mask_test = model.predict(imgs_test, batch_size=1, verbose=1)
 		np.save('results/imgs_mask_test.npy', imgs_mask_test)
+
+	def add_sample_weights(x, image, label):
+		# The weights for each class, with the constraint that:
+		#     sum(class_weights) == 1.0
+		class_weights = tf.constant([1.0, 3.0])
+		class_weights = class_weights/tf.reduce_sum(class_weights)
+
+		# Create an image of `sample_weights` by using the label at each pixel as an 
+		# index into the `class weights` .
+		sample_weights = tf.gather(class_weights, indices=tf.cast(label, tf.int32))
+
+		return image, label, sample_weights
 
 	def save_img(self):
 
@@ -181,8 +222,6 @@ if __name__ == '__main__':
 	myunet = myUnet()
 	myunet.train()
 	myunet.save_img()
-
-
 
 
 
