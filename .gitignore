@@ -1,0 +1,4 @@
+Frontend/node_modules
+Frontend2/node_modules
+Frontend2/public/build
+*.pyc
