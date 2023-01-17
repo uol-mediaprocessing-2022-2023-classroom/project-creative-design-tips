@@ -136,7 +136,7 @@ class myAugmentation(object):
 
 class dataProcess(object):
 
-	def __init__(self, out_rows, out_cols, data_path = "/home/sebastian/Projects/university/test-project/datasets/train/image", label_path = "/home/sebastian/Projects/university/test-project/datasets/train/label", test_path = "/home/sebastian/Projects/university/test-project/datasets/test/image", npy_path = "/home/sebastian/Projects/university/test-project/unet/unet/data/npydata/", img_type = "tif"):
+	def __init__(self, out_rows, out_cols, data_path = "../datasets/train/image", label_path = "../datasets/train/label", test_path = "../datasets/test/image", npy_path = "data/npydata", img_type = "tif"):
 
 		"""
 		
@@ -160,9 +160,9 @@ class dataProcess(object):
 		imgdatas = np.ndarray((len(imgs),self.out_rows,self.out_cols,3), dtype=np.uint8)
 		imglabels = np.ndarray((len(imgs),self.out_rows,self.out_cols,1), dtype=np.uint8)
 		for imgname in imgs:
-			midname = imgname[imgname.rindex("/")+1:]
-			img = load_img(self.data_path + "/" + midname)
-			label = load_img(self.label_path + "/" + midname,color_mode = 'grayscale')
+			midname = imgname[imgname.rindex(os.sep)+1:]
+			img = load_img(os.path.realpath(self.data_path + "/" + midname))
+			label = load_img(os.path.realpath(self.label_path + "/" + midname),color_mode = 'grayscale')
 			img = img_to_array(img)
 			label = img_to_array(label)
 			#img = cv2.imread(self.data_path + "/" + midname,cv2.IMREAD_GRAYSCALE)
@@ -188,8 +188,8 @@ class dataProcess(object):
 		print(len(imgs))
 		imgdatas = np.ndarray((len(imgs),self.out_rows,self.out_cols,3), dtype=np.uint8)
 		for imgname in imgs:
-			midname = imgname[imgname.rindex("/")+1:]
-			img = load_img(self.test_path + "/" + midname)
+			midname = imgname[imgname.rindex(os.sep)+1:]
+			img = load_img(os.path.realpath(self.test_path + "/" + midname))
 			img = img_to_array(img)
 			#img = cv2.imread(self.test_path + "/" + midname,cv2.IMREAD_GRAYSCALE)
 			#img = np.array([img])
