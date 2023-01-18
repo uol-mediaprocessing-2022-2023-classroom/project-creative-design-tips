@@ -10,10 +10,11 @@ from data import *
 
 class myUnet(object):
 
-	def __init__(self, img_rows = 512, img_cols = 512):
+	def __init__(self, id, img_rows = 512, img_cols = 512):
 
 		self.img_rows = img_rows
 		self.img_cols = img_cols
+		self.id = id
 
 	def load_data(self):
 
@@ -157,30 +158,34 @@ class myUnet(object):
 		model = self.get_unet()
 		print("got unet")
 
-		model_checkpoint = ModelCheckpoint('unet.hdf5', monitor='loss',verbose=1, save_best_only=True)
+		model_checkpoint = ModelCheckpoint('results/' + str(self.id) + '/unet.hdf5', monitor='loss',verbose=1, save_best_only=True)
 		print('Fitting model...')
-		model.fit(imgs_train, imgs_mask_train, batch_size=4, epochs=20, verbose=1,validation_split=0.2, shuffle=True, callbacks=[model_checkpoint])
+		model.fit(imgs_train, imgs_mask_train, batch_size=4, epochs=10, verbose=1,validation_split=0.2, shuffle=True, callbacks=[model_checkpoint])
 
 		print('predict test data')
 		imgs_mask_test = model.predict(imgs_test, batch_size=1, verbose=1)
-		np.save('results/imgs_mask_test.npy', imgs_mask_test)
+		np.save('results/' + str(self.id) + '/imgs_mask_test.npy', imgs_mask_test)
 
 	def save_img(self):
 
 		print("array to image")
-		imgs = np.load('results/imgs_mask_test.npy')
+		imgs = np.load('results/' + str(self.id) + '/imgs_mask_test.npy')
 		for i in range(imgs.shape[0]):
 			img = imgs[i]
 			img = array_to_img(img)
-			img.save("results/%d.jpg"%(i))
+			img.save("results/" + str(self.id) + "/%d.jpg"%(i))
 
 
 
 
 if __name__ == '__main__':
-	myunet = myUnet()
-	myunet.train()
-	myunet.save_img()
+	item = 1
+	while True:
+		os.mkdir('results/' + str(item), 0o666)
+		myunet = myUnet(item)
+		myunet.train()
+		myunet.save_img()
+		item += 1
 
 
 
