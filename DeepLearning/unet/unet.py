@@ -197,7 +197,7 @@ class myUnet(object):
 	def add_sample_weights(x, image, label):
 		# The weights for each class, with the constraint that:
 		#     sum(class_weights) == 1.0
-		class_weights = tf.constant([1.0, 3.0])
+		class_weights = tf.constant([1.0, 6.0])
 		class_weights = class_weights/tf.reduce_sum(class_weights)
 
 		# Create an image of `sample_weights` by using the label at each pixel as an 
