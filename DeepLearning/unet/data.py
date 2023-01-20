@@ -71,7 +71,7 @@ class myAugmentation(object):
 			self.doAugmentate(img, savedir, str(i))
 
 
-	def doAugmentate(self, img, save_to_dir, save_prefix, batch_size=1, save_format='tif', imgnum=8):
+	def doAugmentate(self, img, save_to_dir, save_prefix, batch_size=1, save_format='tif', imgnum=28):
 
 		"""
 		augmentate one image
