@@ -181,7 +181,7 @@ class myUnet(object):
 if __name__ == '__main__':
 	item = 1
 	while True:
-		os.mkdir('results/' + str(item), 0o666)
+		os.mkdir('results/' + str(item), 0o777)
 		myunet = myUnet(item)
 		myunet.train()
 		myunet.save_img()
