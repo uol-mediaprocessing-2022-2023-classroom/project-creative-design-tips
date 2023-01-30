@@ -12,10 +12,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Bild im Bild</a>
+                            <a id="bib-btn" class="nav-link active" aria-current="page" href="#">Bild im Bild</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Out of Image</a>
+                            <a id="ooi-btn" class="nav-link" href="#">Out of Image</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -43,10 +43,15 @@
                                     <a href="#">Ausgabe</a>
                                 </div>
                             </section>
-                            <section class="box">
-                                <h2>Ausgewähltes Bild (Input)</h2>
+                            <section class="box" id="box1">
+                                <h2>Ausgewähltes Bild (Bild im Bild)</h2>
                                 <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
                                  id="selectedImage" class="selectedImg">
+                            </section>
+                            <section class="box d-none" id="box2">
+                                <h2>Ausgewähltes Bild (Out Of Image)</h2>
+                                <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
+                                 id="selectedImage2" class="selectedImg">
                             </section>
                             <section class="box">
                                 <h2>Informationen über das Bild</h2>
