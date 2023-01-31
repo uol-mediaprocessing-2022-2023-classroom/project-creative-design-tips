@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, Path, Body, Query, File, UploadFile
 from fastapi.responses import FileResponse
 from PIL import Image, ImageFilter
+from app.aiimage import AIOutOfImage
 import ssl
 import os
 from starlette.background import BackgroundTasks
@@ -53,6 +54,32 @@ async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: 
     blurred_image.paste(cropped_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
 
     blurred_image.save(img_path)
+
+    # The background task runs after the File is returned completetly
+    background_tasks.add_task(remove_file, img_path)
+    return FileResponse(img_path)
+
+@app.post("/get-ai-outofimage/")
+async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...), height: str = Form(...)):
+    img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
+    contents = await file.read()
+
+    with open(f"{img_path}", "wb") as f:
+        f.write(contents)
+
+    print('xStart: ' + xStart)
+    print('yStart: ' + yStart)
+    print('xEnd: ' + xEnd)
+    print('yEnd: ' + yEnd)
+    print('height: ' + height)
+
+    image = Image.open(img_path)
+
+    ai = AIOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
+    resultImage = ai.runProcess(image)
+    
+
+    resultImage.save(img_path)
 
     # The background task runs after the File is returned completetly
     background_tasks.add_task(remove_file, img_path)
