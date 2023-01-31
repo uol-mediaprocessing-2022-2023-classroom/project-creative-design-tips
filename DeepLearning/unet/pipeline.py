@@ -4,7 +4,7 @@ from PIL import Image
 
 mydata = dataProcess(512,512)
 
-originalImage = load_img(os.path.realpath("../datasets/test/image/1.tif"))
+originalImage = load_img(os.path.realpath("../datasets/test/image/5.tif"))
 originalImageArray = img_to_array(originalImage)
 
 imgdatas = np.ndarray((1,512,512,3), dtype=np.uint8)
@@ -17,7 +17,7 @@ myunet = myUnet(1)
 
 model = myunet.get_unet()
 
-model.load_weights('working-networks/unet.hdf5')
+model.load_weights('results/2/unet.hdf5')
 
 imgs_mask = model.predict(imgdatas, verbose=1)
 
