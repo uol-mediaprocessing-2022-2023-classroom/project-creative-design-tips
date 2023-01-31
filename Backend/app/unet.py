@@ -6,7 +6,7 @@ from keras.layers import Input, concatenate, Conv2D, MaxPooling2D, UpSampling2D,
 from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
-from data import *
+from app.data import *
 
 class myUnet(object):
 

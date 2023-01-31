@@ -33,6 +33,7 @@ let bildImBildButton = document.getElementById("bib-btn");
 let outOfImageButton = document.getElementById("ooi-btn");
 let bildImBildBox = document.getElementById("box1");
 let outOfImageBox = document.getElementById("box2");
+let effect = 'inside';
 
 var croppr = new Croppr('#selectedImage', {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
@@ -55,7 +56,8 @@ var croppr2 = new Croppr('#selectedImage2', {
         cropYEnd2 = (data.y + data.height);
         console.log(cropXStart2, cropYStart2, cropXEnd2, cropYEnd2);
       },
-      startSize: [80,80]
+      startSize: [300,300],
+      aspectRatio: 1.0
 });
 
 loginButton.addEventListener('click', login);
@@ -125,11 +127,24 @@ loadImagesButton.addEventListener('click', () => {
 });
 
 addEffectButton.addEventListener('click', () => {
-    loadBlur();
-})
+    if (effect == 'inside') {
+        loadBlur();
+    } else {
+        loadOutOfImage();
+    }
+});
 
 async function loadBlur() {
     let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
+    document.getElementById('default-output').querySelector('img').src = newUrl;
+}
+
+async function loadOutOfImage() {
+    let inputValue = document.getElementById('inputHeight').value;
+    console.log(inputValue);
+    let height = isNaN(inputValue) ? 250 : inputValue;
+
+    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart2, cropYStart2, cropXEnd2, cropYEnd2, height);
     document.getElementById('default-output').querySelector('img').src = newUrl;
 }
 
@@ -228,11 +243,15 @@ function resetData() {
 }
 
 bildImBildButton.addEventListener('click', () => {
-    bildImBildBox.classList.remove("d-none")
-    outOfImageBox.classList.add("d-none")
+    bildImBildBox.classList.remove("d-none");
+    outOfImageBox.classList.add("d-none");
+    effect = 'inside';
 })
 
 outOfImageButton.addEventListener('click', () => {
-    bildImBildBox.classList.add("d-none")
-    outOfImageBox.classList.remove("d-none")
+    bildImBildBox.classList.add("d-none");
+    outOfImageBox.classList.remove("d-none");
+    effect = 'outside';
+    croppr2.resizeTo(400, 400);
+    croppr2.moveTo(0, 0);
 })
