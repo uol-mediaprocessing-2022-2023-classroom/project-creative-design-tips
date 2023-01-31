@@ -23,8 +23,16 @@ let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
 let cropYEnd = null;
+let cropXStart2 = null;
+let cropYStart2 = null;
+let cropXEnd2 = null;
+let cropYEnd2 = null;
 let backend = new Backend();
 let selectedImage = "https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png";
+let bildImBildButton = document.getElementById("bib-btn");
+let outOfImageButton = document.getElementById("ooi-btn");
+let bildImBildBox = document.getElementById("box1");
+let outOfImageBox = document.getElementById("box2");
 
 var croppr = new Croppr('#selectedImage', {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
@@ -37,6 +45,18 @@ var croppr = new Croppr('#selectedImage', {
       },
       startSize: [80,80]
   });
+
+var croppr2 = new Croppr('#selectedImage2', {
+    // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
+    onCropEnd: function(data) {
+        cropXStart2 = data.x;
+        cropYStart2 = data.y;
+        cropXEnd2 = (data.x + data.width);
+        cropYEnd2 = (data.y + data.height);
+        console.log(cropXStart2, cropYStart2, cropXEnd2, cropYEnd2);
+      },
+      startSize: [80,80]
+});
 
 loginButton.addEventListener('click', login);
 loginModalButton.addEventListener('click', () => {
@@ -134,7 +154,15 @@ async function handleSelectCeweImage(element) {
 
     // Load High-Resolution
     let highresolution = await cewe.fetchHighResolution(imageData.data.id);
-    croppr.setImage(highresolution.url);
+
+    if (outOfImageBox.classList.contains("d-none")) {
+        croppr.setImage(highresolution.url);
+    } else if (bildImBildBox.classList.contains("d-none")) {
+        croppr2.setImage(highresolution.url);
+    } else {
+        alert("critical croppr error.")
+    }
+
     selectedImage = highresolution.url;
 }
 
@@ -196,4 +224,15 @@ function toggleLoginLogout() {
 function resetData() {
     gallery.resetImages()
     croppr.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
+    croppr2.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
 }
+
+bildImBildButton.addEventListener('click', () => {
+    bildImBildBox.classList.remove("d-none")
+    outOfImageBox.classList.add("d-none")
+})
+
+outOfImageButton.addEventListener('click', () => {
+    bildImBildBox.classList.add("d-none")
+    outOfImageBox.classList.remove("d-none")
+})
