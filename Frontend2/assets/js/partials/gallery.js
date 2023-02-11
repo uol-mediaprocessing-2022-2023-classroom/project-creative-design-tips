@@ -7,7 +7,7 @@ class Gallery {
 
     addImage(data) {
         let entry = document.createElement('div');
-        entry.classList.add('col-2');
+        entry.classList.add('col-3');
 
         let image = document.createElement('img');
         image.classList.add('w-100');

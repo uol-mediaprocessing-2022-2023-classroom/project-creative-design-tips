@@ -38,9 +38,9 @@ var croppr = new Cropper(document.getElementById('selectedImage'), {
         cropYStart = Math.round(event.detail.y);
         cropXEnd = Math.round(cropXStart + event.detail.width);
         cropYEnd = Math.round(cropYStart + event.detail.height);
-        console.log(cropXStart, cropYStart, cropXEnd, cropYEnd);
+        //console.log(cropXStart, cropYStart, cropXEnd, cropYEnd);
     },
-    startSize: [80,80]
+    zoomable: false
 });
 
 loginButton.addEventListener('click', login);
