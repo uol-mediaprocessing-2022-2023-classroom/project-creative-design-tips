@@ -1,5 +1,5 @@
 const { Modal } = require("bootstrap");
-var Croppr = require('croppr');
+import Cropper from 'cropperjs';
 import { Gallery } from './../partials/gallery.js';
 import { loadImages } from './../partials/cewe-api.js'
 import { Cewe } from '../partials/cewe.js';
@@ -23,10 +23,6 @@ let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
 let cropYEnd = null;
-let cropXStart2 = null;
-let cropYStart2 = null;
-let cropXEnd2 = null;
-let cropYEnd2 = null;
 let backend = new Backend();
 let selectedImage = "https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png";
 let bildImBildButton = document.getElementById("bib-btn");
@@ -35,29 +31,16 @@ let bildImBildBox = document.getElementById("box1");
 let outOfImageBox = document.getElementById("box2");
 let effect = 'inside';
 
-var croppr = new Croppr('#selectedImage', {
+var croppr = new Cropper(document.getElementById('selectedImage'), {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
-    onCropEnd: function(data) {
-        cropXStart = data.x;
-        cropYStart = data.y;
-        cropXEnd = (data.x + data.width);
-        cropYEnd = (data.y + data.height);
+    crop(event) {
+        cropXStart = Math.round(event.detail.x);
+        cropYStart = Math.round(event.detail.y);
+        cropXEnd = Math.round(cropXStart + event.detail.width);
+        cropYEnd = Math.round(cropYStart + event.detail.height);
         console.log(cropXStart, cropYStart, cropXEnd, cropYEnd);
-      },
-      startSize: [80,80]
-  });
-
-var croppr2 = new Croppr('#selectedImage2', {
-    // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
-    onCropEnd: function(data) {
-        cropXStart2 = data.x;
-        cropYStart2 = data.y;
-        cropXEnd2 = (data.x + data.width);
-        cropYEnd2 = (data.y + data.height);
-        console.log(cropXStart2, cropYStart2, cropXEnd2, cropYEnd2);
-      },
-      startSize: [300,300],
-      aspectRatio: 1.0
+    },
+    startSize: [80,80]
 });
 
 loginButton.addEventListener('click', login);
@@ -144,7 +127,7 @@ async function loadOutOfImage() {
     console.log(inputValue);
     let height = isNaN(inputValue) ? 250 : inputValue;
 
-    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart2, cropYStart2, cropXEnd2, cropYEnd2, height);
+    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height);
     document.getElementById('default-output').querySelector('img').src = newUrl;
 }
 
@@ -170,13 +153,7 @@ async function handleSelectCeweImage(element) {
     // Load High-Resolution
     let highresolution = await cewe.fetchHighResolution(imageData.data.id);
 
-    if (outOfImageBox.classList.contains("d-none")) {
-        croppr.setImage(highresolution.url);
-    } else if (bildImBildBox.classList.contains("d-none")) {
-        croppr2.setImage(highresolution.url);
-    } else {
-        alert("critical croppr error.")
-    }
+    croppr.replace(highresolution.url);
 
     selectedImage = highresolution.url;
 }
@@ -238,20 +215,15 @@ function toggleLoginLogout() {
 
 function resetData() {
     gallery.resetImages()
-    croppr.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
-    croppr2.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
+    croppr.replace("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
 }
 
 bildImBildButton.addEventListener('click', () => {
-    bildImBildBox.classList.remove("d-none");
-    outOfImageBox.classList.add("d-none");
     effect = 'inside';
+    croppr.setAspectRatio(NaN);
 })
 
 outOfImageButton.addEventListener('click', () => {
-    bildImBildBox.classList.add("d-none");
-    outOfImageBox.classList.remove("d-none");
     effect = 'outside';
-    croppr2.resizeTo(400, 400);
-    croppr2.moveTo(0, 0);
+    croppr.setAspectRatio(1);
 })
