@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request, Path, Body, Query, File, UploadFile
 from fastapi.responses import FileResponse
 from PIL import Image, ImageFilter
 from app.aiimage import AIOutOfImage
+from app.HoughOutOfImage import HoughOutOfImage
 import ssl
 import os
 from starlette.background import BackgroundTasks
@@ -76,7 +77,8 @@ async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile,
     image = Image.open(img_path)
 
     ai = AIOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
-    resultImage = ai.runProcess(image)
+    hough = HoughOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
+    resultImage = hough.runProcess(image)
     
 
     resultImage.save(img_path)

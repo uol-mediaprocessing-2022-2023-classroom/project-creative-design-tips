@@ -225,5 +225,5 @@ bildImBildButton.addEventListener('click', () => {
 
 outOfImageButton.addEventListener('click', () => {
     effect = 'outside';
-    croppr.setAspectRatio(1);
+    croppr.setAspectRatio(NaN);
 })
