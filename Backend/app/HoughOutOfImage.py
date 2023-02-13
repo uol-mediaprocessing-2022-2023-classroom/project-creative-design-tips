@@ -20,11 +20,7 @@ class HoughOutOfImage(object):
         # Load an image
         imagesrc = image.copy()
         imagesrc = np.array(imagesrc)
-        print("type of iamge:")
-        print(type(imagesrc))
         src = cv.cvtColor(imagesrc, cv.COLOR_BGR2GRAY)
-        # the line below is only for testing with  the image, this is meant to be the value passed when this code is called from the frontend
-        print("I am here")
         
         x = [self.yStart,self.yEnd,self.xStart,self.xEnd]  #[y_oben,y_unten,x_links,x_rechts]
 
@@ -35,7 +31,7 @@ class HoughOutOfImage(object):
 
         # apply canny edge detection
         def cannyFilter(img):
-            return cv.Canny(img, 50, 200, None, 3);
+            return cv.Canny(img, 50, 200, None, 3)
 
 
         # takes the furthest rightmost line and leftmost line and returns the coordinates in an array
@@ -60,8 +56,7 @@ class HoughOutOfImage(object):
                 return False
             return (upperValueMaxLine,lowerValueMinLine,lowerValueMaxLine, upperValueMinLine)
 
-        dst = cannyFilter(src);
-
+        dst = cannyFilter(src)
         # get the Houristic HoughLines with specified metrics
         linesP = cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 10)
         
@@ -105,7 +100,6 @@ class HoughOutOfImage(object):
 
         # takes the selected image area and creates a new image with it
         test = imagesrc[x[0]:x[1],x[2]:x[3]]
-        print(validLines)
 
         # calculates the scaling factor based on coordinates
         scalingFactor = getScalingFactor(validLines)
@@ -115,9 +109,9 @@ class HoughOutOfImage(object):
 
         # gets the size of the original image and calculates the new dimensions based on the multiplier
         outputSize = test.shape
-        width = round(outputSize[0]*multiplier)
-        height = round(outputSize[1]*multiplier)
-        output = cv.resize(test, (height, width))
+        height = round(outputSize[0]*multiplier)
+        width = round(outputSize[1]*multiplier)
+        output = cv.resize(test, (width, height))
         offset = round((scalingFactor[3]-x[2])*multiplier-scalingFactor[1])
 
         # creates a new image with the required dimensions based on the size of the two images
