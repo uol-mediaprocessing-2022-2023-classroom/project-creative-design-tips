@@ -30,6 +30,9 @@ let outOfImageButton = document.getElementById("ooi-btn");
 let bildImBildBox = document.getElementById("box1");
 let outOfImageBox = document.getElementById("box2");
 let effect = 'inside';
+let rangeslider = document.getElementById("sliderRange");
+let rangesliderValue = 50;
+let blurDisplay = document.getElementById("blurDisplay");
 
 var croppr = new Cropper(document.getElementById('selectedImage'), {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
@@ -118,7 +121,7 @@ addEffectButton.addEventListener('click', () => {
 });
 
 async function loadBlur() {
-    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
+    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, rangesliderValue);
     document.getElementById('default-output').querySelector('img').src = newUrl;
 }
 
@@ -227,3 +230,11 @@ outOfImageButton.addEventListener('click', () => {
     effect = 'outside';
     croppr.setAspectRatio(1);
 })
+
+blurDisplay.innerHTML = rangeslider.value;
+
+rangeslider.oninput = function() {
+    rangesliderValue = this.value;
+    blurDisplay.innerHTML = this.value;
+  }
+  

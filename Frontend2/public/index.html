@@ -44,7 +44,7 @@
                                 </div>
                             </section>
                             <section class="box" id="box1">
-                                <h2>Ausgewähltes Bild (Bild im Bild)</h2>
+                                <h2>Ausgewähltes Bild</h2>
                                 <div class="cropper-wrapper">
                                     <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
                                      id="selectedImage" class="selectedImg">
@@ -61,6 +61,11 @@
                                     <button class="btn btn-primary" id="addEffectButton">
                                         Effekt anwenden
                                     </button>
+                                    <div class="rangeslider">
+                                        <input type="range" min="1" max="100" value="50"
+                                                       class="myslider" id="sliderRange">
+                                        <p>Blur: <span id="blurDisplay"></span></p>
+                                      </div>
                                     <button class="btn btn-primary" id="openImagesButton" data-bs-toggle="modal" data-bs-target="#imageModal">
                                         Bild auswählen
                                     </button>

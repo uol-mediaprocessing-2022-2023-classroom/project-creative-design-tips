@@ -1,5 +1,5 @@
 class Backend {
-  async getBlur(selectedUrl, xStart, yStart, xEnd, yEnd) {
+  async getBlur(selectedUrl, xStart, yStart, xEnd, yEnd, blur) {
     let url = "http://127.0.0.1:8000/get-blur/";
 
     let imageData = await fetch(selectedUrl, {
@@ -18,6 +18,8 @@ class Backend {
     formData.append('yStart', yStart);
     formData.append('xEnd', xEnd);
     formData.append('yEnd', yEnd);
+    formData.append('blur', blur);
+    
 
     let blurImg = await fetch(url, {
       method: "post",
