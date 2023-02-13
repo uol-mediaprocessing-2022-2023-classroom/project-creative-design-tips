@@ -29,6 +29,8 @@ let effect = 'inside';
 let rangeslider = document.getElementById("sliderRange");
 let rangesliderValue = 50;
 let blurDisplay = document.getElementById("blurDisplay");
+let paddingWidth = document.getElementById("paddingWidthInput").value;
+let paddingColor = document.getElementById("paddingColorInput").value;
 
 toggleLoginLogout(cewe.isLoggedIn());
 
@@ -80,7 +82,9 @@ addEffectButton.addEventListener('click', () => {
 });
 
 async function loadBlur() {
-    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, rangesliderValue);
+    let paddingWidth = document.getElementById("paddingWidthInput").value;
+    let paddingColor = document.getElementById("paddingColorInput").value;
+    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, rangesliderValue, paddingWidth, paddingColor);
     document.getElementById('default-output').querySelector('img').src = newUrl;
     document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
 }
@@ -113,6 +117,7 @@ async function handleSelectCeweImage(element) {
     // croppr.setImage(imageData.data.url);
     document.getElementById('selectedImage-name').innerText = imageData.data.name;
     document.getElementById('selectedImage-avgColor').innerText = imageData.data.avgColor;
+    document.getElementById('paddingColorInput').value = imageData.data.avgColor;
 
     // Load High-Resolution
     let highresolution = await cewe.fetchHighResolution(imageData.data.id);

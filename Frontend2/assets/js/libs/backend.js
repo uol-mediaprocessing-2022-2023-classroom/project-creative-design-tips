@@ -1,5 +1,5 @@
 class Backend {
-  async getBlur(selectedUrl, xStart, yStart, xEnd, yEnd, blur) {
+  async getBlur(selectedUrl, xStart, yStart, xEnd, yEnd, blur, paddingWidth, paddingColor) {
     let url = "http://127.0.0.1:8000/get-blur/";
 
     let imageData = await fetch(selectedUrl, {
@@ -19,6 +19,8 @@ class Backend {
     formData.append('xEnd', xEnd);
     formData.append('yEnd', yEnd);
     formData.append('blur', blur);
+    formData.append('paddingWidth', paddingWidth);
+    formData.append('paddingColor', paddingColor);
     
 
     let blurImg = await fetch(url, {
