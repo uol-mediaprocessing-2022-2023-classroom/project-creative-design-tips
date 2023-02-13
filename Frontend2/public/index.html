@@ -35,7 +35,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <div class="settings_imi">
+                <div id="settings_imi">
                     <div class="mb-3">             
                         <div class="rangeslider">
                             <input type="range" min="1" max="100" value="50" class="myslider" id="sliderRange">
@@ -43,10 +43,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="settings_ofi">
+                <div id="settings_ofi" class="d-none">
                     <div class="mb-3">
                         <label for="inputHeight" class="form-label">Untergrenze im Bild</label>
-                        <input type="number" class="form-control bg-inputdark text-light" id="inputHeight" value="200">
+                        <input type="number" class="form-control bg-inputdark text-light" id="inputHeight" value="250">
+                    </div>
+                    <select class="form-select mb-3" id="">
+                        <option value="ai_1">KI-gestützt (KI 1)</option>
+                        <option value="ai_2">KI-gestützt (KI 2)</option>
+                        <option value="ai_3">KI-gestützt (KI 3)</option>
+                        <option value="ai_4">KI-gestützt (KI 4)</option>
+                        <option value="hough_logic">Hough-Transformation</option>
+                    </select>
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="preview_active">
+                      <label class="form-check-label" for="preview_active">Vorschau aktivieren</label>
                     </div>
                     <div class="mb-3">
                         <label for="paddingWidthInput" class="form-label">Rahmendicke</label>
@@ -63,9 +74,9 @@
             <article>
                 <div class="flex-container">
                     <section class="box" id="box1">
-                        <h2>Ausgewähltes Bild (Bild im Bild)</h2>
+                        <h2>Ausgewähltes Bild</h2>
                         <div class="cropper-wrapper">
-                            <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
+                            <img src="/build/img/default.webp"
                                 id="selectedImage" class="selectedImg">
                         </div>
                     </section>
@@ -75,7 +86,7 @@
                             <button class="btn btn-primary" id="addEffectButton">
                                 Effekt anwenden
                             </button>
-                            <button class="btn btn-primary" id="openImagesButton" data-bs-toggle="modal" data-bs-target="#imageModal">
+                            <button class="btn btn-primary" id="openImagesButton">
                                 Bild auswählen
                             </button>
                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
@@ -95,7 +106,7 @@
                             <div class="output-image" id="default-output">
                                 <img class="image-display"
                                     src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                    alt="Girl in a jacket">
+                                    alt="Default export image">
                                 <button type="button" class="btn btn-danger btn-sm download-btn">Download</button>
                                 <div class="image-loading d-none">
                                     <div class="loading-icon">
@@ -108,6 +119,7 @@
                 </div>
             </article>
         </div>
+        <div class="toast-container p-3 bottom-0 end-0" id="toaster"></div>
 
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog">

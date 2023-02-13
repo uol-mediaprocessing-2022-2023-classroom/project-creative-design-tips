@@ -328,3 +328,17 @@ body {
 .myslider:hover {
   opacity: 1;
 }
+
+.toast-area {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 90000;
+}
+
+.toaster-image {
+  width: 1.5rem;
+  height: auto;
+}
