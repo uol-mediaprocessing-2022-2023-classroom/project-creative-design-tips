@@ -8,6 +8,12 @@
 @import "~bootstrap/scss/utilities/api";
 
 @import "~bootstrap/scss/bootstrap";
+@import "./bootstrap/extends.scss";
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/solid";
 
 @import "./common.scss";
 

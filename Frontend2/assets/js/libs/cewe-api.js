@@ -1,4 +1,4 @@
-import { Gallery } from './../partials/gallery.js';
+import { Gallery } from './../libs/gallery.js';
 
 export async function loginUnused() {
 

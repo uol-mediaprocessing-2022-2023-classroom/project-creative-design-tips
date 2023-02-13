@@ -1,16 +1,12 @@
 const { Modal } = require("bootstrap");
 import Cropper from 'cropperjs';
-import { Gallery } from './../partials/gallery.js';
-import { loadImages } from './../partials/cewe-api.js'
-import { Cewe } from '../partials/cewe.js';
-import { Backend } from '../partials/backend.js';
+import { Gallery } from './../libs/gallery.js';
+import { Cewe } from '../libs/cewe.js';
+import { Backend } from '../libs/backend.js';
 
-let clientId = null;
-let isLoggedIn = false;
-let userName = "";
 let email = document.getElementById('email');
 let pw = document.getElementById('password');
-let loginButton = document.getElementById('loginButton');
+let loginForm = document.getElementById('loginForm');
 let loginView = document.getElementById('login');
 let userNameField = document.getElementById('userName');
 let loginModalButton = document.getElementById('loginModalButton');
@@ -18,7 +14,7 @@ let loginModal = new Modal(document.getElementById('loginModal'));
 let loadImagesButton = document.getElementById('loadImagesbutton');
 let addEffectButton = document.getElementById('addEffectButton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
-let cewe = null;
+let cewe = new Cewe(gallery);
 let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
@@ -30,6 +26,8 @@ let outOfImageButton = document.getElementById("ooi-btn");
 let bildImBildBox = document.getElementById("box1");
 let outOfImageBox = document.getElementById("box2");
 let effect = 'inside';
+
+toggleLoginLogout(cewe.isLoggedIn());
 
 var croppr = new Cropper(document.getElementById('selectedImage'), {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
@@ -43,7 +41,10 @@ var croppr = new Cropper(document.getElementById('selectedImage'), {
     zoomable: false
 });
 
-loginButton.addEventListener('click', login);
+loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    login();
+});
 loginModalButton.addEventListener('click', () => {
     if (!loginModalButton.hasAttribute('data-bs-toggle')) {
         login();
@@ -51,65 +52,23 @@ loginModalButton.addEventListener('click', () => {
 });
 
 async function login() {
-
-    let status = 0;
-
-    if (isLoggedIn) {
+    if (cewe.isLoggedIn()) {
+        await cewe.logout();
+        toggleLoginLogout(cewe.isLoggedIn());
         logout();
-        toggleLoginLogout();
         return;
     }
 
-    const requestOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            clientVersion: "0.0.1-medienVerDemo",
-            apiAccessKey: "6003d11a080ae5edf4b4f45481b89ce7",
-        }, // this apiAccessKey is for testing
-        body: JSON.stringify({
-            login: email.value,
-            password: pw.value,
-            deviceName: "Medienverarbeitung CEWE API Demo",
-        }),
-    };
-
-    const response = await fetch(
-        "https://cmp.photoprintit.com/api/account/session/",
-        requestOptions
-    ).then((response) => {
-        status = response.status;
-
-        if (!(status >= 200 && status <= 299)) {
-            // some broad status 'handling'
-            if (status == 500 || status == 405) {
-                alert("Internal error occured, try again later.");
-                return;
-            }
-            alert("Entered credinentials are incorrect.");
-            return;
-        }
-
-        return response.json();
-    });
-
-    if (response == null) {
-        return;
-    }
-
-    clientId = response.session.cldId;
-    cewe = new Cewe(clientId, gallery);
-    userName = response.user.firstname;
-    userNameField.innerHTML = userName;
-    toggleLoginLogout();
-    isLoggedIn = true;
+    await cewe.login(email.value, pw.value);
+    toggleLoginLogout(cewe.isLoggedIn());
 }
 
 loadImagesButton.addEventListener('click', () => {
-    if (clientId != null) { cewe.loadImages(); }
+    if (cewe.isLoggedIn()) { cewe.loadImages(); }
 });
 
 addEffectButton.addEventListener('click', () => {
+    document.getElementById('default-output').querySelector('.image-loading').classList.remove('d-none');
     if (effect == 'inside') {
         loadBlur();
     } else {
@@ -120,6 +79,7 @@ addEffectButton.addEventListener('click', () => {
 async function loadBlur() {
     let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
     document.getElementById('default-output').querySelector('img').src = newUrl;
+    document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
 }
 
 async function loadOutOfImage() {
@@ -129,6 +89,7 @@ async function loadOutOfImage() {
 
     let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height);
     document.getElementById('default-output').querySelector('img').src = newUrl;
+    document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
 }
 
 document.body.addEventListener('click', event => {
@@ -198,13 +159,14 @@ function logout() {
     resetData();
 }
 
-function toggleLoginLogout() {
-    if (userNameField.classList.contains('d-none')) {
+function toggleLoginLogout(loggedIn) {
+    if (loggedIn) {
         userNameField.classList.remove('d-none');
         loginModalButton.innerText = 'Logout';
         loginModalButton.removeAttribute('data-bs-toggle');
         loginModalButton.removeAttribute('data-bs-target');
         loginModal.hide();
+        userNameField.innerHTML = cewe.getUsername();
     } else {
         userNameField.classList.add('d-none');
         loginModalButton.innerText = 'Login';
@@ -221,9 +183,13 @@ function resetData() {
 bildImBildButton.addEventListener('click', () => {
     effect = 'inside';
     croppr.setAspectRatio(NaN);
+    bildImBildButton.classList.add('active');
+    outOfImageButton.classList.remove('active');
 })
 
 outOfImageButton.addEventListener('click', () => {
     effect = 'outside';
     croppr.setAspectRatio(1);
+    bildImBildButton.classList.remove('active');
+    outOfImageButton.classList.add('active');
 })

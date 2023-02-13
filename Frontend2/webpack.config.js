@@ -56,6 +56,12 @@ const config = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+    stats: {
+      colors: true,
+      modules: true,
+      reasons: true,
+      errorDetails: true
+    },
 };
 
 module.exports = () => {
