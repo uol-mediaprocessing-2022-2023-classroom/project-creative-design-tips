@@ -26,6 +26,9 @@ let outOfImageButton = document.getElementById("ooi-btn");
 let bildImBildBox = document.getElementById("box1");
 let outOfImageBox = document.getElementById("box2");
 let effect = 'inside';
+let rangeslider = document.getElementById("sliderRange");
+let rangesliderValue = 50;
+let blurDisplay = document.getElementById("blurDisplay");
 
 toggleLoginLogout(cewe.isLoggedIn());
 
@@ -77,7 +80,7 @@ addEffectButton.addEventListener('click', () => {
 });
 
 async function loadBlur() {
-    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
+    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, rangesliderValue);
     document.getElementById('default-output').querySelector('img').src = newUrl;
     document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
 }
@@ -193,3 +196,11 @@ outOfImageButton.addEventListener('click', () => {
     bildImBildButton.classList.remove('active');
     outOfImageButton.classList.add('active');
 })
+
+blurDisplay.innerHTML = rangeslider.value;
+
+rangeslider.oninput = function() {
+    rangesliderValue = this.value;
+    blurDisplay.innerHTML = this.value;
+  }
+  

@@ -36,7 +36,7 @@ def home():
 # Endpoint for retrieving a blurred version of an image
 # The image is fetched from the URL in the post body and a blur is applied to it, the result is returned
 @app.post("/get-blur/")
-async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...)):
+async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...), blur: str = Form(...)):
     img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
     contents = await file.read()
 
@@ -50,7 +50,7 @@ async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: 
 
     image = Image.open(img_path)
     cropped_image = image.crop((int(xStart), int(yStart), int(xEnd), int(yEnd)))
-    blurred_image = image.filter(ImageFilter.GaussianBlur(radius=50))
+    blurred_image = image.filter(ImageFilter.GaussianBlur(radius=int(blur)))
     blurred_image.paste(cropped_image, (int(xStart), int(yStart), int(xEnd), int(yEnd)))
 
     blurred_image.save(img_path)
