@@ -55,9 +55,9 @@ class Backend {
       return '/build/img/default.webp';
     }
   }
-  async getOutOfImage(selectedUrl, xStart, yStart, xEnd, yEnd, height, type) {
+  async getOutOfImage(selectedUrl, xStart, yStart, xEnd, yEnd, height, type, muted) {
     try {
-      let url = "http://127.0.0.1:8000/get-ai-outofimage/";
+      let url = "http://127.0.0.1:8000/get-outofimage/";
 
       let imageData = await fetch(selectedUrl, {
         method: "get"
@@ -66,13 +66,15 @@ class Backend {
           status = response.status;
 
           if (!(status >= 200 && status <= 299)) {
-            // some broad status 'handling'
-            if (status == 500 || status == 405) {
-              this.toaster.addToast('danger', 'Fehler', 'Leider ist bei der Verarbeitung ein Fehler aufgereteten, das sollte so nicht passieren');
+            if (!muted) {
+              // some broad status 'handling'
+              if (status == 500 || status == 405) {
+                this.toaster.addToast('danger', 'Fehler', 'Leider ist bei der Verarbeitung ein Fehler aufgereteten, das sollte so nicht passieren');
+                return;
+              }
+              this.toaster.addToast('danger', 'Fehler', 'Es ist ein unbekannter Fehler aufgetreten');
               return;
             }
-            this.toaster.addToast('danger', 'Fehler', 'Es ist ein unbekannter Fehler aufgetreten');
-            return;
           }
           return response.blob();
         })
@@ -98,16 +100,18 @@ class Backend {
         .then((response) => {
           status = response.status;
 
-          console.log(status);
-
           if (!(status >= 200 && status <= 299)) {
-            // some broad status 'handling'
-            if (status == 500 || status == 405) {
-              this.toaster.addToast('danger', 'Fehler', 'Leider ist bei der Verarbeitung ein Fehler aufgereteten, das sollte so nicht passieren');
+            if (!muted) {
+              // some broad status 'handling'
+              if (status == 500 || status == 405) {
+                this.toaster.addToast('danger', 'Fehler', 'Leider ist bei der Verarbeitung ein Fehler aufgereteten, das sollte so nicht passieren');
+                return;
+              }
+              response.json().then((text) => {
+                this.toaster.addToast('danger', 'Fehler', text.detail);
+              });
               return;
             }
-            this.toaster.addToast('danger', 'Fehler', 'Es ist ein unbekannter Fehler aufgetreten');
-            return;
           }
           return response.blob();
         })
@@ -116,7 +120,9 @@ class Backend {
         });
       return outOfImg;
     } catch (error) {
-      this.toaster.addToast('danger', 'Fehler', 'Leider ist bei der Verarbeitung ein Fehler aufgereteten, das sollte so nicht passieren');
+      if (!muted) {
+        this.toaster.addToast('danger', 'Fehler', 'Leider ist bei der Verarbeitung ein Fehler aufgereteten, das sollte so nicht passieren');
+      }
       return '/build/img/default.webp';
     }
   }

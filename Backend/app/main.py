@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, Path, Body, Query, File, UploadFile
 from fastapi.responses import FileResponse
@@ -71,7 +71,7 @@ async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: 
     background_tasks.add_task(remove_file, img_path)
     return FileResponse(img_path)
 
-@app.post("/get-ai-outofimage/")
+@app.post("/get-outofimage/")
 async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...), height: str = Form(...), type: str = Form(...)):
     img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
     contents = await file.read()
@@ -87,11 +87,28 @@ async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile,
 
     image = Image.open(img_path)
 
-    ai = AIOutOfImage('app/networks/network1.hdf5', int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
-    resultImage = ai.runProcess(image)
-    ai = AIOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
-    hough = HoughOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
-    resultImage = hough.runProcess(image)
+    if(type == 'hough_logic'):
+        hough = HoughOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
+        resultImage = hough.runProcess(image)
+        if (isinstance(resultImage, int)):
+            raise HTTPException(400, detail="Das Bild enthält keine erkennbaren Objekte")
+    else:
+        number = type.replace("ai_", "")
+        if (int(number) > 7):
+            raise HTTPException(400, detail="Bitte geben Sie eine valide Network-Kennung an")
+
+        iWidth = int(xEnd) - int(xStart)
+        iHeight = int(yEnd) - int(yStart)
+        
+        if (iWidth != iHeight):
+            raise HTTPException(400, detail="Das angegebene Bild muss quadratisch sein")
+
+        if (iWidth < 512):
+            raise HTTPException(400, detail="Das angegebene Bild muss mindestens 512x512 Pixel groß sein")
+        ai = AIOutOfImage('app/networks/network' + number + '.hdf5', int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
+        resultImage = ai.runProcess(image)
+        if (isinstance(resultImage, int)):
+            raise HTTPException(400, detail="Das Bild enthält keine erkennbaren Objekte")
     
 
     resultImage.save(img_path)

@@ -80,6 +80,9 @@ class AIOutOfImage(object):
 				if firstPositionBottom < 0:
 					firstPositionBottom = i
 
+		if (pixelsCountTop <= 0):
+			return 1
+
 		resizefactor = pixelsCountBottom / pixelsCountTop
 		newSize = math.ceil(size * resizefactor)
 		newHeight = math.ceil(self.height * resizefactor)

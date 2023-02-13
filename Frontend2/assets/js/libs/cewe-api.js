@@ -194,7 +194,6 @@ export async function getBlur(selectedId, cldId, xStart, yStart, xEnd, yEnd) {
       .then((imageBlob) => {
         return URL.createObjectURL(imageBlob);
       });
-    console.log(blurImg);
     this.selectedImage.url = blurImg;
 }
 

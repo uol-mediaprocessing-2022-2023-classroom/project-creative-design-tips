@@ -4,13 +4,17 @@ import { Gallery } from './../libs/gallery.js';
 import { Cewe } from '../libs/cewe.js';
 import { Backend } from '../libs/backend.js';
 import { Toaster } from '../libs/toaster.js';
+import { Preview } from '../libs/preview.js';
 
 const ofi_options = {
-    'ai_1': 'KI-gestützt (KI 1)',
-    'ai_2': 'KI-gestützt (KI 2)',
-    'ai_3': 'KI-gestützt (KI 3)',
-    'ai_4': 'KI-gestützt (KI 4)',
-    'hough_logic': 'Hough-Transformation'
+    'ai_1': { title: 'KI-gestützt (KI 1)', aspectRatio: 1 },
+    'ai_2': { title: 'KI-gestützt (KI 2)', aspectRatio: 1 },
+    'ai_3': { title: 'KI-gestützt (KI 3)', aspectRatio: 1 },
+    'ai_4': { title: 'KI-gestützt (KI 4)', aspectRatio: 1 },
+    'ai_5': { title: 'KI-gestützt (KI 5)', aspectRatio: 1 },
+    'ai_6': { title: 'KI-gestützt (KI 6)', aspectRatio: 1 },
+    'ai_7': { title: 'KI-gestützt (KI 7)', aspectRatio: 1 },
+    'hough_logic': { title: 'Hough-Transformation', aspectRatio: NaN },
 }
 
 let email = document.getElementById('email');
@@ -27,6 +31,7 @@ let addEffectButton = document.getElementById('addEffectButton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
 let toaster = new Toaster(document.getElementById('toaster'));
 let cewe = new Cewe(gallery, toaster);
+let preview = new Preview(document.getElementById('preview-elements'));
 let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
@@ -43,6 +48,16 @@ let rangesliderValue = 50;
 let blurDisplay = document.getElementById("blurDisplay");
 let paddingWidth = document.getElementById("paddingWidthInput").value;
 let paddingColor = document.getElementById("paddingColorInput").value;
+let renderingMethodSelect = document.getElementById('ofi_rendering_method');
+let previewSelect = document.getElementById('preview_active');
+
+for (const [key, value] of Object.entries(ofi_options)) {
+    let option = document.createElement('option');
+    option.value = key;
+    option.innerText = value.title;
+
+    renderingMethodSelect.appendChild(option);
+}
 
 toggleLoginLogout(cewe.isLoggedIn());
 
@@ -53,9 +68,13 @@ var croppr = new Cropper(document.getElementById('selectedImage'), {
         cropYStart = Math.round(event.detail.y);
         cropXEnd = Math.round(cropXStart + event.detail.width);
         cropYEnd = Math.round(cropYStart + event.detail.height);
-        //console.log(cropXStart, cropYStart, cropXEnd, cropYEnd);
     },
     zoomable: false
+});
+
+renderingMethodSelect.addEventListener('change', (event) => {
+    event.preventDefault();
+    croppr.setAspectRatio(ofi_options[renderingMethodSelect.value].aspectRatio);
 });
 
 loginForm.addEventListener('submit', (event) => {
@@ -105,13 +124,22 @@ async function loadBlur() {
 }
 
 async function loadOutOfImage() {
+    preview.resetImages();
     let inputValue = document.getElementById('inputHeight').value;
-    console.log(inputValue);
     let height = isNaN(inputValue) ? 250 : inputValue;
 
-    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height, 'ai_1');
+    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height, renderingMethodSelect.value);
     document.getElementById('default-output').querySelector('img').src = newUrl;
     document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
+
+    if (previewSelect.checked) {
+        for (const [key, value] of Object.entries(ofi_options)) {
+            if (renderingMethodSelect.value !== key) {
+                let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height, key, true);
+                preview.addPreviewImage(newUrl);
+            }
+        }
+    }
 }
 
 document.body.addEventListener('click', event => {

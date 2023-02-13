@@ -56,12 +56,7 @@
                         <label for="inputHeight" class="form-label">Untergrenze im Bild</label>
                         <input type="number" class="form-control bg-inputdark text-light" id="inputHeight" value="250">
                     </div>
-                    <select class="form-select mb-3" id="">
-                        <option value="ai_1">KI-gestützt (KI 1)</option>
-                        <option value="ai_2">KI-gestützt (KI 2)</option>
-                        <option value="ai_3">KI-gestützt (KI 3)</option>
-                        <option value="ai_4">KI-gestützt (KI 4)</option>
-                        <option value="hough_logic">Hough-Transformation</option>
+                    <select class="form-select mb-3" id="ofi_rendering_method">
                     </select>
                     <div class="mb-3 form-check">
                       <input type="checkbox" class="form-check-input" id="preview_active">
@@ -102,7 +97,7 @@
                     </section>
                     <section class="wide-box">
                         <h2>Output</h2>
-                        <div class="image-flex-container">
+                        <div class="image-flex-container" id="preview-elements">
                             <div class="output-image" id="default-output">
                                 <img class="image-display"
                                     src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
