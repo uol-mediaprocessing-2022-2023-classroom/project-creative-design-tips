@@ -60,7 +60,7 @@ async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: 
     return FileResponse(img_path)
 
 @app.post("/get-ai-outofimage/")
-async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...), height: str = Form(...)):
+async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...), height: str = Form(...), type: str = Form(...)):
     img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
     contents = await file.read()
 
@@ -75,7 +75,7 @@ async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile,
 
     image = Image.open(img_path)
 
-    ai = AIOutOfImage(int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
+    ai = AIOutOfImage('app/networks/network1.hdf5', int(xStart), int(yStart), int(xEnd), int(yEnd), int(height))
     resultImage = ai.runProcess(image)
     
 

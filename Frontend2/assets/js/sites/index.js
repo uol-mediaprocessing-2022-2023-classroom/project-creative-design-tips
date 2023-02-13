@@ -3,6 +3,15 @@ import Cropper from 'cropperjs';
 import { Gallery } from './../libs/gallery.js';
 import { Cewe } from '../libs/cewe.js';
 import { Backend } from '../libs/backend.js';
+import { Toaster } from '../libs/toaster.js';
+
+const ofi_options = {
+    'ai_1': 'KI-gestützt (KI 1)',
+    'ai_2': 'KI-gestützt (KI 2)',
+    'ai_3': 'KI-gestützt (KI 3)',
+    'ai_4': 'KI-gestützt (KI 4)',
+    'hough_logic': 'Hough-Transformation'
+}
 
 let email = document.getElementById('email');
 let pw = document.getElementById('password');
@@ -11,16 +20,19 @@ let loginView = document.getElementById('login');
 let userNameField = document.getElementById('userName');
 let loginModalButton = document.getElementById('loginModalButton');
 let loginModal = new Modal(document.getElementById('loginModal'));
+let imagesOpenButton = document.getElementById('openImagesButton');
+let imageModal = new Modal(document.getElementById('imageModal'));
 let loadImagesButton = document.getElementById('loadImagesbutton');
 let addEffectButton = document.getElementById('addEffectButton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
-let cewe = new Cewe(gallery);
+let toaster = new Toaster(document.getElementById('toaster'));
+let cewe = new Cewe(gallery, toaster);
 let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
 let cropYEnd = null;
-let backend = new Backend();
-let selectedImage = "https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png";
+let backend = new Backend(toaster);
+let selectedImage = "/build/img/default.webp";
 let bildImBildButton = document.getElementById("bib-btn");
 let outOfImageButton = document.getElementById("ooi-btn");
 let bildImBildBox = document.getElementById("box1");
@@ -52,6 +64,9 @@ loginModalButton.addEventListener('click', () => {
     if (!loginModalButton.hasAttribute('data-bs-toggle')) {
         login();
     }
+});
+imagesOpenButton.addEventListener('click', () => {
+    imageModal.show();
 });
 
 async function login() {
@@ -90,7 +105,7 @@ async function loadOutOfImage() {
     console.log(inputValue);
     let height = isNaN(inputValue) ? 250 : inputValue;
 
-    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height);
+    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height, 'ai_1');
     document.getElementById('default-output').querySelector('img').src = newUrl;
     document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
 }
@@ -120,6 +135,7 @@ async function handleSelectCeweImage(element) {
     croppr.replace(highresolution.url);
 
     selectedImage = highresolution.url;
+    imageModal.hide();
 }
 
 async function downloadImage(selectedUrl, fileName) {
@@ -150,7 +166,7 @@ async function downloadImage(selectedUrl, fileName) {
 
     let url = window.URL.createObjectURL(imageData);
     a.href = url;
-    a.download = fileName + fileEnding;
+    a.download = fileName + '.' + fileEnding;
     a.click();
     window.URL.revokeObjectURL(url);
 }
@@ -180,7 +196,7 @@ function toggleLoginLogout(loggedIn) {
 
 function resetData() {
     gallery.resetImages()
-    croppr.replace("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
+    croppr.replace("/build/img/default.webp");
 }
 
 bildImBildButton.addEventListener('click', () => {
@@ -188,6 +204,8 @@ bildImBildButton.addEventListener('click', () => {
     croppr.setAspectRatio(NaN);
     bildImBildButton.classList.add('active');
     outOfImageButton.classList.remove('active');
+    document.getElementById('settings_imi').classList.remove('d-none');
+    document.getElementById('settings_ofi').classList.add('d-none');
 })
 
 outOfImageButton.addEventListener('click', () => {
@@ -195,6 +213,8 @@ outOfImageButton.addEventListener('click', () => {
     croppr.setAspectRatio(1);
     bildImBildButton.classList.remove('active');
     outOfImageButton.classList.add('active');
+    document.getElementById('settings_imi').classList.add('d-none');
+    document.getElementById('settings_ofi').classList.remove('d-none');
 })
 
 blurDisplay.innerHTML = rangeslider.value;
@@ -202,5 +222,5 @@ blurDisplay.innerHTML = rangeslider.value;
 rangeslider.oninput = function() {
     rangesliderValue = this.value;
     blurDisplay.innerHTML = this.value;
-  }
+}
   

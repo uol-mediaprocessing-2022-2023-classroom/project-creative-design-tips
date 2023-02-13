@@ -1,8 +1,9 @@
 class Cewe {
-  constructor(gallery) {
+  constructor(gallery, toaster) {
     this.clientId = null;
     this.username = null;
     this.gallery = gallery;
+    this.toaster = toaster;
     this.loadStorage();
   }
 
@@ -34,10 +35,10 @@ class Cewe {
       if (!(status >= 200 && status <= 299)) {
         // some broad status 'handling'
         if (status == 500 || status == 405) {
-          alert("Es ist ein Fehler bei der Verbindung zu den CEWE-Servern aufgetreten, bitte versuche es später erneut");
+          this.toaster.addToast('danger', 'Fehler', 'Es ist ein Fehler bei der Verbindung zu den CEWE-Servern aufgetreten, bitte versuche es später erneut');
           return;
         }
-        alert("Die eingegegeben Zugangsdaten sind nit korrekt.");
+        this.toaster.addToast('danger', 'Fehler', 'Die eingegegeben Zugangsdaten sind nicht korrekt');
         return;
       }
       return response.json();
@@ -73,7 +74,7 @@ class Cewe {
     );
     const status = response.status;
     if (!(status >= 200 && status <= 299)) {
-        alert("Es ist ein Fehler im Logout-Prozess aufgetreten.");
+        this.toaster.addToast('danger', 'Fehler', 'Es ist ein Fehler im Logout-Prozess aufgetreten.');
         window.localStorage.removeItem('clientId');
         window.localStorage.removeItem('username');
         this.clientId = null;
@@ -97,7 +98,7 @@ class Cewe {
 
   async loadImages() {
     if (!this.isLoggedIn()) {
-      alert('Bitte logge dich ein um diese Funktion nutzen zu können');
+      this.toaster.addToast('danger', 'Fehler', 'Bitte logge dich ein um diese Funktion nutzen zu können');
     }
 
     // First fetch the ids of all the images on a users account, we need these in order to acquire the actual images in a given resolution
@@ -139,7 +140,7 @@ class Cewe {
 
   async fetchHighResolution(selectedId) {
     if (!this.isLoggedIn()) {
-      alert('Bitte logge dich ein um diese Funktion nutzen zu können');
+      this.toaster.addToast('danger', 'Fehler', 'Bitte logge dich ein um diese Funktion nutzen zu können');
     }
       // Fetch the url to the image selected by the user in it's original resolution
     const imgResponse = await fetch(

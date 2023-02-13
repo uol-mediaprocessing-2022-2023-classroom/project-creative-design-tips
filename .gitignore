@@ -4,3 +4,4 @@ Frontend2/public/build
 DeepLearning/unet/results
 *.pyc
 .hdf5
+Backend/app/networks
