@@ -1,3 +1,9 @@
+###############################
+# Disclaimer
+#
+# This file was initially created by https://github.com/zhixuhao/unet and only slightly modified (values changed)
+###############################
+
 '''
 split 30 single images from an array of images : train-volume.tif label-volume.tif test-volume.tif
 '''
