@@ -62,7 +62,6 @@ for (const [key, value] of Object.entries(ofi_options)) {
 toggleLoginLogout(cewe.isLoggedIn());
 
 var croppr = new Cropper(document.getElementById('selectedImage'), {
-    // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
     crop(event) {
         cropXStart = Math.round(event.detail.x);
         cropYStart = Math.round(event.detail.y);
@@ -157,7 +156,6 @@ document.body.addEventListener('click', event => {
 
 async function handleSelectCeweImage(element) {
     let imageData = gallery.getImageData(element.dataset.id);
-    // croppr.setImage(imageData.data.url);
     document.getElementById('selectedImage-name').innerText = imageData.data.name;
     document.getElementById('selectedImage-avgColor').innerText = imageData.data.avgColor;
     document.getElementById('paddingColorInput').value = imageData.data.avgColor;

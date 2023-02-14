@@ -1,6 +1,7 @@
 Frontend/node_modules
 Frontend/public/build
 DeepLearning/unet/results
+DeepLearning/unet/test-predict/*.jpg
 *.pyc
 .hdf5
 Backend/app/networks
