@@ -12,6 +12,9 @@ pip install -r .\requirements.txt
 uvicorn app.main:app --reload
 ```
 
+## Bei Problemen mit Pillow
+Überprüfen, ob es ggf. an der alten Pillow-Version liegt, ggf. auf Fork umsteigen ( https://pillow.readthedocs.io/en/stable/installation.html )
+
 ## Zum Backend
 <p>Die Anwendung dient als ein simples Python basiertes Backend für eine Webapp.</p>
 <p>Der einzige Endpoint ("/get-blur") fügt einen Blur einen Bild hinzu und Antwortet mit dem bearbeitetem Bild.</p>
