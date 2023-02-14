@@ -1,4 +1,5 @@
-# Backend Demo
+# Backend
+Das Backend basiert grundlegend auf der vorgestellten Demo
 
 ## Setup
 1. Python wird benötigt und kann hier heruntergeladen werden: https://www.python.org/downloads/ (ich nutze Python 3.10)
@@ -16,7 +17,8 @@ uvicorn app.main:app --reload
 Überprüfen, ob es ggf. an der alten Pillow-Version liegt, ggf. auf Fork umsteigen ( https://pillow.readthedocs.io/en/stable/installation.html )
 
 ## Zum Backend
-<p>Die Anwendung dient als ein simples Python basiertes Backend für eine Webapp.</p>
+<p>Die Anwendung dient als ein simples Python basiertes Backend für die Webapp.</p>
 <p>Der einzige Endpoint ("/get-blur") fügt einen Blur einen Bild hinzu und Antwortet mit dem bearbeitetem Bild.</p>
 
-Docs: https://fastapi.tiangolo.com/tutorial/
+## Endpoint /get-blur
+Der Endpoint ("/get-blur") bietet die Methode Bild-im-Bild an und verlangt folgende Parameter:
