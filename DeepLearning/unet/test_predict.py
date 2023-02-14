@@ -9,13 +9,13 @@ from data import *
 
 mydata = dataProcess(512,512)
 
-imgs_test = mydata.load_test_data('pipeline/test.tif')
+imgs_test = mydata.load_test_data()
 
 myunet = myUnet(1)
 
 model = myunet.get_unet()
 
-model.load_weights('working-networks/sample14-nightly.hdf5')
+model.load_weights('unet.hdf5')
 
 imgs_mask_test = model.predict(imgs_test, verbose=1)
 
