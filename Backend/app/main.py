@@ -54,9 +54,6 @@ async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: 
     cropped_image = image.crop((int(xStart), int(yStart), int(xEnd), int(yEnd)))
 
     if(int(paddingWidth) > 0):
-        width, height = cropped_image.size
-        new_width = width + 2 * int(paddingWidth)
-        new_height = height + 2 * int(paddingWidth)
         padded_image = add_margin(cropped_image, int(paddingWidth), int(paddingWidth), int(paddingWidth), int(paddingWidth), color)
 
         blurred_image = image.filter(ImageFilter.GaussianBlur(radius=int(blur)))
@@ -121,7 +118,8 @@ async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile,
 def remove_file(path: str) -> None:
     os.unlink(path)
 
-# soruce: https://note.nkmk.me/en/python-pillow-add-margin-expand-canvas/
+# Add margin to a picture
+# source: https://note.nkmk.me/en/python-pillow-add-margin-expand-canvas/
 def add_margin(pil_img, top, right, bottom, left, color):
     width, height = pil_img.size
     new_width = width + right + left
