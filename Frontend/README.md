@@ -9,7 +9,7 @@
 
 ## Compile und Start
 ```npm run serve```<br><br>
-Nach dem starten kann man auf die Seite über localhost zugreifen.<br>
+Nach dem Starten kann man auf die Seite über localhost (http://127.0.0.1:8080/) zugreifen.<br>
 
 <br>
 
