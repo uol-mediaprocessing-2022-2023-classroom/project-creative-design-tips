@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Request, Path, Body, Query, File, UploadFile
+from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
 from PIL import Image, ImageFilter, ImageColor
 from app.aiimage import AIOutOfImage
@@ -8,7 +8,6 @@ from app.HoughOutOfImage import HoughOutOfImage
 import ssl
 import os
 from starlette.background import BackgroundTasks
-import urllib.request, urllib.parse
 import uuid
 
 

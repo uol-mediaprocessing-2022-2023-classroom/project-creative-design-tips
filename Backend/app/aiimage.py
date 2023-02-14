@@ -1,5 +1,5 @@
 from app.unet import *
-from tensorflow.keras.utils import array_to_img, img_to_array
+from tensorflow.keras.utils import img_to_array
 from PIL import Image
 import math
 
