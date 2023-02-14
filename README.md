@@ -1,4 +1,4 @@
-# Welcome to project Creative Design Tips
+# Willkommen zum Projekt Creative Design Tips
 
 <p>Dies ist ein Projekt im Rahmen des Moduls Medienverarbeitung an der Universität Oldenburg.</p>
 <p>Das Ergebnis des Projektes ist eine Webanwendung zur Anwendung der Methoden 'Bild im Bild' und 'Out of Image' auf geeignete Bilder auf einem CEWE myPhotos Konto.</p>
