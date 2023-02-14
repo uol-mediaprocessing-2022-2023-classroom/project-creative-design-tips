@@ -1,0 +1,106 @@
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+$white:    #fff;
+$gray-100: #F2F4FC;
+$gray-200: #F1F4F8;
+$gray-300: #e1e5ea;
+$gray-400: #B8BFC7;
+$gray-500: #aab2bb;
+$gray-600: #AAB2BB;
+$gray-700: #9198a1;
+$gray-800: #797F86;
+$gray-900: #5e656e;
+$gray-1000: #444c55;
+$gray-1100: #2c333a;
+$gray-1200: #15191e;
+
+$blue-100: #cde5fe;
+$blue-200: #9dccfb;
+$blue-300: #70b2f5;
+$blue-400: #4599ed;
+$blue-500: #1d7fe2;
+$blue-600: #1266ba;
+$blue-700: #0a4c8f;
+$blue-800: #043362;
+$blue-900: #011932;
+$blue-925: #011223;
+
+$green-100: #D4FAD1;
+$green-200: #abf2a6;
+$green-300: #84e87d;
+$green-400: #60db57;
+$green-500: #3dcc33;
+$green-600: #2da824;
+$green-700: #1e8217;
+$green-800: #12590d;
+$green-900: #082e05;
+
+$brandDark: $gray-1100;
+$pink:    #e83e8c;
+$red:     #f4273b;
+$orange:  #fd7e14;
+$yellow:  #face09;
+$green:   #1abc5b;
+$teal:    #20c997;
+$cyan:    #00d3ff;
+
+$lightGradient2: #009ef4;
+$lightGradient3: #00c0e1;
+$lightGradient4: #00dbb5;
+$lightGradient5: #88ef86;
+$lightGradient6: #f9f871;
+
+$darkGradient2: #666cd2;
+$darkGradient3: #8764c4;
+$darkGradient4: #9e5eb3;
+$darkGradient5: #ad59a2;
+$darkGradient6: #b65791;
+
+
+$primary: $blue-500;
+
+$primary:       $blue-500;
+$secondary:     $green-500;
+$success:       $green;
+$info:          $cyan;
+$warning:       $yellow;
+$danger:        $red;
+$light:         $gray-100;
+$dark:          $brandDark;
+
+$line-height-lg:              1.5;
+$line-height-sm:              1.5;
+
+$border-width:                1px;
+$border-color:                $gray-200;
+
+$border-radius:               .15rem;
+$border-radius-lg:            .3rem;
+$border-radius-sm:            .2rem;
+
+$rounded-pill:                50rem;
+
+$component-active-color:      $white;
+
+$caret-width:                 .3em;
+$caret-vertical-align:        $caret-width * .85;
+$caret-spacing:               $caret-width * .85;
+
+$transition-base:             all .5s ease-in-out;
+$transition-fade:             opacity .15s linear;
+$transition-collapse:         height .35s ease;
+
+/* BREADCRUMB */
+$breadcrumb-bg: $gray-100;
+$breadcrumb-border-radius: 0.4rem;
+$breadcrumb-padding-y: 0.5rem;
+$breadcrumb-padding-x: 0.7rem;
+
+$toast-color:                       $gray-100;
+$toast-background-color:            rgba($gray-1100, 1.0);
+
+$toast-header-color:                $white;
+$toast-header-background-color:     rgba($gray-1200, 1.0);

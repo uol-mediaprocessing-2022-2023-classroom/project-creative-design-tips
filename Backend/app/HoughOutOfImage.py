@@ -57,7 +57,7 @@ class HoughOutOfImage(object):
             return (upperValueMaxLine,lowerValueMinLine,lowerValueMaxLine, upperValueMinLine)
 
         dst = cannyFilter(src)
-        # get the Houristic HoughLines with specified metrics
+        # get the Houristic HoughLines with specified metrics, parameters used are from https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html
         linesP = cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 10)
         
         # get the dimensions of the image
