@@ -43,5 +43,5 @@ height: Höhe zur Eingrenzung des Bildabschnittes, welcher zur Erweiterung des I
 type: 'hough_logic' oder 'ai_X' (X ist hier Nummer des genutzen unets) / Gibt an, welche Logik zur Erweiterung des Inputbildes angewandt wird</p>
 
 ## unets
-<p>Die trainierten Netze sind aufgrund von Dateigrößen nicht im Repository zu finden.<br>
-Vortrainierte Netze sind unter https://cloud.uni-oldenburg.de/s/azTfazyGeJTw2ga zu finden, diese müssen zur Nutzung unter DeepLearning/unet/data hinterlegt werden.</p>
+<p>Die trainierten Netze sind aufgrund von Dateigrößen nicht, wie beim Steup beschrieben, im Repository zu finden.<br>
+Vortrainierte Netze sind unter https://cloud.uni-oldenburg.de/s/azTfazyGeJTw2ga zu finden, diese müssen zur Nutzung unter Backend/app/networks hinterlegt werden.</p>
