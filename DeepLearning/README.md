@@ -39,3 +39,9 @@ Die Test-Daten im Ordner datasets enthalten sowohl die Original-Datein, als auch
 Die Daten kommen von folgenden Bilder-Bibliotheken:
 - https://unsplash.com/
 - https://pixabay.com/
+
+## Erstellte Netzwerke
+Für die Bearbeitung der Aufgaben wurden unzählige Netzwerke erarbeitet. Diese wurden bereits sortiert und unbrauchbare Netze (Nur schwraz/weiß Bilder) aussortiert.
+
+Alle Netze, sowie die für die Anwendung relevanten Netze (Used-Networks Unterordner) finden sich unter folgendem Link:
+https://cloud.uni-oldenburg.de/s/azTfazyGeJTw2ga

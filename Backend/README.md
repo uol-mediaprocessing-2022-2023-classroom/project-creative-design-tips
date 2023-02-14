@@ -3,6 +3,7 @@ Das Backend basiert grundlegend auf der vorgestellten Demo
 
 ## Setup
 1. Python wird benötigt und kann hier heruntergeladen werden: https://www.python.org/downloads/ (Python 3.10 wird empfohlen, zum jetzigen Zeitpunkt unterstürtzen neure Versionen tensorflow nicht, auch relevant für uvicorn)
+2. Erstelle den Ordner networks unterhalb von app und füge dort die Netzwerke (network1.hdf bis ... network7.hdf) hinzu - Alle erarbeiteten Netzwerke sind in der DeepLearning-Readme dokumentiert
 2. Führe diesen Befehlt in der Konsole aus:
 ```
 pip install -r .\requirements.txt
