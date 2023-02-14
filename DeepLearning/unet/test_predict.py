@@ -1,6 +1,12 @@
 from unet import *
 from data import *
 
+###############################
+# Disclaimer
+#
+# This file was initially created by https://github.com/zhixuhao/unet and only slightly modified (values changed)
+###############################
+
 mydata = dataProcess(512,512)
 
 imgs_test = mydata.load_test_data('pipeline/test.tif')

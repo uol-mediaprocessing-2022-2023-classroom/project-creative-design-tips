@@ -1,9 +1,11 @@
+<html lang="de">
 <html>
     <head>
         <link rel="stylesheet" href="build/app.css">
+        <title>CreativeDesignTips</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">CreativeDesignTips</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +22,7 @@
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <span id="userName" class="navbar-text d-none">
-                            Test
+                            Username
                         </span>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" id="loginModalButton">Login</a>
@@ -29,156 +31,131 @@
                 </div>
             </div>
         </nav>
-        <div class="selectedImageField">
-            <div class="selectedImageContainer">
-                <div class="pagebody">
-                    <article>
-                        <div class="flex-container">
-                            <section class="box">
-                                <h2>Navigation</h2>
-                                <div class="vertical-menu">
-                                    <a href="#" class="active">Home</a>
-                                    <a href="#">Bild auswählen</a>
-                                    <a href="#">Bildberreich auswählen</a>
-                                    <a href="#">Ausgabe</a>
-                                </div>
-                            </section>
-                            <section class="box" id="box1">
-                                <h2>Ausgewähltes Bild (Bild im Bild)</h2>
-                                <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
-                                 id="selectedImage" class="selectedImg">
-                            </section>
-                            <section class="box d-none" id="box2">
-                                <h2>Ausgewähltes Bild (Out Of Image)</h2>
-                                <img src="https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png"
-                                 id="selectedImage2" class="selectedImg">
-                            </section>
-                            <section class="box">
-                                <h2>Informationen über das Bild</h2>
-                                <div class="inputField">
-                                    <input placeholder="Your CEWE cldID" class="idInput" />
-                                    <button class="btn btn-outline-primary" id="loadImagesbutton">
-                                        Load Images
-                                    </button>
-                                    <input placeholder="Height" class="mt-5" id="inputHeight" />
-                                    <button class="btn btn-primary" id="addEffectButton">
-                                        Effekt anwenden
-                                    </button>
-                    
-                                    <div>
-                                        <h3>Image Info:<br /></h3>
-                                        <p id="selectedImage-name"></p>
-                                        <p id="selectedImage-avgColor"></p>
-                                    </div>
-                                </div>
-                            </section>
-                            <section class="wide-box">
-                                <h2>Output</h2>
-                                <div class="image-flex-container">
-                                    <div class="output-image" id="default-output">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                            <button type="button" class="btn btn-danger btn-sm download-btn">Download</button>
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                    <div class="output-image">
-                                        <img class="image-display"
-                                            src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
-                                            alt="Girl in a jacket">
-                                    </div>
-                                </div>
-                            </section>
+        <div class="offcanvas offcanvas-start text-bg-dark" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="staticBackdropLabel">Einstellungen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div id="settings_imi">
+                    <div class="mb-3">             
+                        <div class="rangeslider">
+                            <input type="range" min="1" max="100" value="50" class="myslider" id="sliderRange">
+                            <p>Blur: <span id="blurDisplay"></span></p>
                         </div>
-                    </article>
+                    </div>
+                    <div class="mb-3">
+                        <label for="paddingWidthInput" class="form-label">Rahmendicke</label>
+                        <input type="number" class="form-control bg-inputdark text-light" id="paddingWidthInput" value="0" max="100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="paddingColorInput" class="form-label">Rahmenfarbe</label>
+                        <input type="color" class="form-control form-control-color" id="paddingColorInput" value="#ffffff" title="Wählen Sie die Farbe">
+                    </div>
+                </div>
+                <div id="settings_ofi" class="d-none">
+                    <div class="mb-3">
+                        <label for="inputHeight" class="form-label">Untergrenze im Bild</label>
+                        <input type="number" class="form-control bg-inputdark text-light" id="inputHeight" value="250">
+                    </div>
+                    <select class="form-select mb-3" id="ofi_rendering_method">
+                    </select>
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="preview_active">
+                      <label class="form-check-label" for="preview_active">Vorschau aktivieren</label>
+                    </div>
                 </div>
             </div>
         </div>
-    
-        <div class="imageGalleryField">
-          <div class="row" id="image-gallery">
-            <!--<v-row>
-              <v-col v-for="n in galleryImageNum" :key="n" class="d-flex child-flex" cols="2">
-                <v-img :src="currGallery[n - 1].url" aspect-ratio="1" max-height="200" max-width="200"
-                  class="grey lighten-2" @click="updateSelected(currGallery[n - 1].id)">
-                  <template v-slot:placeholder>
-                    <v-row class="fill-height ma-0" align="center" justify="center">
-                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                    </v-row>
-                  </template>
-                </v-img>
-              </v-col>
-            </v-row>-->
-          </div>
-          <button class="loadMoreBtn btn btn-primary" @click="$emit('loadMore')">Load more</button>
+        <div class="pagebody">
+            <article>
+                <div class="flex-container">
+                    <section class="box" id="box1">
+                        <h2>Ausgewähltes Bild</h2>
+                        <div class="cropper-wrapper">
+                            <img src="/build/img/default.webp"
+                                id="selectedImage" class="selectedImg" alt="Bilder-Vorschau">
+                        </div>
+                    </section>
+                    <section class="box">
+                        <h2>Informationen über das Bild</h2>
+                        <div class="inputField">
+                            <button class="btn btn-primary" id="addEffectButton">
+                                Effekt anwenden
+                            </button>
+                            <button class="btn btn-primary" id="openImagesButton">
+                                Bild auswählen
+                            </button>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+                                Einstellungen anpassen
+                            </button>
+            
+                            <div>
+                                <h3>Image Info:<br /></h3>
+                                <p id="selectedImage-name"></p>
+                                <p id="selectedImage-avgColor"></p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="wide-box">
+                        <h2>Output</h2>
+                        <div class="image-flex-container" id="preview-elements">
+                            <div class="output-image" id="default-output">
+                                <img class="image-display"
+                                    src="https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459__480.png"
+                                    alt="Default export image">
+                                <button type="button" class="btn btn-danger btn-sm download-btn">Download</button>
+                                <div class="image-loading d-none">
+                                    <div class="loading-icon">
+                                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </article>
         </div>
+        <div class="toast-container p-3 bottom-0 end-0" id="toaster"></div>
 
-
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content bg-dark text-light">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div id="login" class="modal-body">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password">
+                        <form action="#" method="post" id="loginForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control bg-inputdark text-light" id="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control bg-inputdark text-light" id="password">
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button id="loginButton" type="button" class="btn btn-primary">Login</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="imageModalLabel">Bilder-Auswahl</h1>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-primary" id="loadImagesbutton" aria-label="Reload"><i class="fa-solid fa-rotate"></i></button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="image-gallery"></div>
+                        <button class="loadMoreBtn btn btn-primary">Load more</button>
                     </div>
                 </div>
             </div>

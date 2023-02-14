@@ -8,6 +8,12 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 from app.data import *
 
+###############################
+# Disclaimer
+#
+# This file was initially created by https://github.com/zhixuhao/unet and only slightly modified (values changed)
+###############################
+
 class myUnet(object):
 
 	def __init__(self, id, img_rows = 512, img_cols = 512):

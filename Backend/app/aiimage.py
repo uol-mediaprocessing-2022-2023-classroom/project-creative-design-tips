@@ -11,13 +11,14 @@ import math
 
 class AIOutOfImage(object):
 
-	def __init__(self, xStart, yStart, xEnd, yEnd, height):
+	def __init__(self, network, xStart, yStart, xEnd, yEnd, height):
 
 		self.xStart = xStart
 		self.yStart = yStart
 		self.xEnd = xEnd
 		self.yEnd = yEnd
 		self.height = height
+		self.network = network
 
 	def runProcess(self, image: Image):
 
@@ -41,7 +42,7 @@ class AIOutOfImage(object):
 
 		model = myunet.get_unet()
 
-		model.load_weights('app/unet.hdf5')
+		model.load_weights(self.network)
 
 		imgs_mask = model.predict(imgdatas, verbose=1)
 
@@ -79,6 +80,9 @@ class AIOutOfImage(object):
 				if firstPositionBottom < 0:
 					firstPositionBottom = i
 
+		if (pixelsCountTop <= 0):
+			return 1
+
 		resizefactor = pixelsCountBottom / pixelsCountTop
 		newSize = math.ceil(size * resizefactor)
 		newHeight = math.ceil(self.height * resizefactor)
@@ -94,7 +98,7 @@ class AIOutOfImage(object):
 
 		startPosition = firstPositionBottom - firstPositionNew
 
-		resultImage = Image.new('RGB', (size, size + (self.height)))
+		resultImage = Image.new('RGBA', (size, size + (self.height)))
 
 		resultImage.paste(pathway, (startPosition, size - (newSize - newHeight)))
 		resultImage.paste(original, (0, 0))

@@ -1,132 +1,113 @@
 const { Modal } = require("bootstrap");
-var Croppr = require('croppr');
-import { Gallery } from './../partials/gallery.js';
-import { loadImages } from './../partials/cewe-api.js'
-import { Cewe } from '../partials/cewe.js';
-import { Backend } from '../partials/backend.js';
+import Cropper from 'cropperjs';
+import { Gallery } from './../libs/gallery.js';
+import { Cewe } from '../libs/cewe.js';
+import { Backend } from '../libs/backend.js';
+import { Toaster } from '../libs/toaster.js';
+import { Preview } from '../libs/preview.js';
 
-let clientId = null;
-let isLoggedIn = false;
-let userName = "";
+const ofi_options = {
+    'ai_1': { title: 'KI-gestützt (KI 1)', aspectRatio: 1 },
+    'ai_2': { title: 'KI-gestützt (KI 2)', aspectRatio: 1 },
+    'ai_3': { title: 'KI-gestützt (KI 3)', aspectRatio: 1 },
+    'ai_4': { title: 'KI-gestützt (KI 4)', aspectRatio: 1 },
+    'ai_5': { title: 'KI-gestützt (KI 5)', aspectRatio: 1 },
+    'ai_6': { title: 'KI-gestützt (KI 6)', aspectRatio: 1 },
+    'ai_7': { title: 'KI-gestützt (KI 7)', aspectRatio: 1 },
+    'hough_logic': { title: 'Hough-Transformation', aspectRatio: NaN },
+}
+
 let email = document.getElementById('email');
 let pw = document.getElementById('password');
-let loginButton = document.getElementById('loginButton');
+let loginForm = document.getElementById('loginForm');
 let loginView = document.getElementById('login');
 let userNameField = document.getElementById('userName');
 let loginModalButton = document.getElementById('loginModalButton');
 let loginModal = new Modal(document.getElementById('loginModal'));
+let imagesOpenButton = document.getElementById('openImagesButton');
+let imageModal = new Modal(document.getElementById('imageModal'));
 let loadImagesButton = document.getElementById('loadImagesbutton');
 let addEffectButton = document.getElementById('addEffectButton');
 let gallery = new Gallery(document.getElementById('image-gallery'));
-let cewe = null;
+let toaster = new Toaster(document.getElementById('toaster'));
+let cewe = new Cewe(gallery, toaster);
+let preview = new Preview(document.getElementById('preview-elements'));
 let cropXStart = null;
 let cropYStart = null;
 let cropXEnd = null;
 let cropYEnd = null;
-let cropXStart2 = null;
-let cropYStart2 = null;
-let cropXEnd2 = null;
-let cropYEnd2 = null;
-let backend = new Backend();
-let selectedImage = "https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png";
+let backend = new Backend(toaster);
+let selectedImage = "/build/img/default.webp";
 let bildImBildButton = document.getElementById("bib-btn");
 let outOfImageButton = document.getElementById("ooi-btn");
 let bildImBildBox = document.getElementById("box1");
 let outOfImageBox = document.getElementById("box2");
 let effect = 'inside';
+let rangeslider = document.getElementById("sliderRange");
+let rangesliderValue = 50;
+let blurDisplay = document.getElementById("blurDisplay");
+let paddingWidth = document.getElementById("paddingWidthInput").value;
+let paddingColor = document.getElementById("paddingColorInput").value;
+let renderingMethodSelect = document.getElementById('ofi_rendering_method');
+let previewSelect = document.getElementById('preview_active');
 
-var croppr = new Croppr('#selectedImage', {
-    // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
-    onCropEnd: function(data) {
-        cropXStart = data.x;
-        cropYStart = data.y;
-        cropXEnd = (data.x + data.width);
-        cropYEnd = (data.y + data.height);
-        console.log(cropXStart, cropYStart, cropXEnd, cropYEnd);
-      },
-      startSize: [80,80]
-  });
+for (const [key, value] of Object.entries(ofi_options)) {
+    let option = document.createElement('option');
+    option.value = key;
+    option.innerText = value.title;
 
-var croppr2 = new Croppr('#selectedImage2', {
+    renderingMethodSelect.appendChild(option);
+}
+
+toggleLoginLogout(cewe.isLoggedIn());
+
+var croppr = new Cropper(document.getElementById('selectedImage'), {
     // alternatively use croppr.getValue() with return value = {x: 21, y: 63: width: 120, height: 120}
-    onCropEnd: function(data) {
-        cropXStart2 = data.x;
-        cropYStart2 = data.y;
-        cropXEnd2 = (data.x + data.width);
-        cropYEnd2 = (data.y + data.height);
-        console.log(cropXStart2, cropYStart2, cropXEnd2, cropYEnd2);
-      },
-      startSize: [300,300],
-      aspectRatio: 1.0
+    crop(event) {
+        cropXStart = Math.round(event.detail.x);
+        cropYStart = Math.round(event.detail.y);
+        cropXEnd = Math.round(cropXStart + event.detail.width);
+        cropYEnd = Math.round(cropYStart + event.detail.height);
+    },
+    zoomable: false
 });
 
-loginButton.addEventListener('click', login);
+renderingMethodSelect.addEventListener('change', (event) => {
+    event.preventDefault();
+    croppr.setAspectRatio(ofi_options[renderingMethodSelect.value].aspectRatio);
+});
+
+loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    login();
+});
 loginModalButton.addEventListener('click', () => {
     if (!loginModalButton.hasAttribute('data-bs-toggle')) {
         login();
     }
 });
+imagesOpenButton.addEventListener('click', () => {
+    imageModal.show();
+});
 
 async function login() {
-
-    let status = 0;
-
-    if (isLoggedIn) {
+    if (cewe.isLoggedIn()) {
+        await cewe.logout();
+        toggleLoginLogout(cewe.isLoggedIn());
         logout();
-        toggleLoginLogout();
         return;
     }
 
-    const requestOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            clientVersion: "0.0.1-medienVerDemo",
-            apiAccessKey: "6003d11a080ae5edf4b4f45481b89ce7",
-        }, // this apiAccessKey is for testing
-        body: JSON.stringify({
-            login: email.value,
-            password: pw.value,
-            deviceName: "Medienverarbeitung CEWE API Demo",
-        }),
-    };
-
-    const response = await fetch(
-        "https://cmp.photoprintit.com/api/account/session/",
-        requestOptions
-    ).then((response) => {
-        status = response.status;
-
-        if (!(status >= 200 && status <= 299)) {
-            // some broad status 'handling'
-            if (status == 500 || status == 405) {
-                alert("Internal error occured, try again later.");
-                return;
-            }
-            alert("Entered credinentials are incorrect.");
-            return;
-        }
-
-        return response.json();
-    });
-
-    if (response == null) {
-        return;
-    }
-
-    clientId = response.session.cldId;
-    cewe = new Cewe(clientId, gallery);
-    userName = response.user.firstname;
-    userNameField.innerHTML = userName;
-    toggleLoginLogout();
-    isLoggedIn = true;
+    await cewe.login(email.value, pw.value);
+    toggleLoginLogout(cewe.isLoggedIn());
 }
 
 loadImagesButton.addEventListener('click', () => {
-    if (clientId != null) { cewe.loadImages(); }
+    if (cewe.isLoggedIn()) { cewe.loadImages(); }
 });
 
 addEffectButton.addEventListener('click', () => {
+    document.getElementById('default-output').querySelector('.image-loading').classList.remove('d-none');
     if (effect == 'inside') {
         loadBlur();
     } else {
@@ -135,17 +116,30 @@ addEffectButton.addEventListener('click', () => {
 });
 
 async function loadBlur() {
-    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd);
+    let paddingWidth = document.getElementById("paddingWidthInput").value;
+    let paddingColor = document.getElementById("paddingColorInput").value;
+    let newUrl = await backend.getBlur(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, rangesliderValue, paddingWidth, paddingColor);
     document.getElementById('default-output').querySelector('img').src = newUrl;
+    document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
 }
 
 async function loadOutOfImage() {
+    preview.resetImages();
     let inputValue = document.getElementById('inputHeight').value;
-    console.log(inputValue);
     let height = isNaN(inputValue) ? 250 : inputValue;
 
-    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart2, cropYStart2, cropXEnd2, cropYEnd2, height);
+    let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height, renderingMethodSelect.value);
     document.getElementById('default-output').querySelector('img').src = newUrl;
+    document.getElementById('default-output').querySelector('.image-loading').classList.add('d-none');
+
+    if (previewSelect.checked) {
+        for (const [key, value] of Object.entries(ofi_options)) {
+            if (renderingMethodSelect.value !== key) {
+                let newUrl = await backend.getOutOfImage(selectedImage, cropXStart, cropYStart, cropXEnd, cropYEnd, height, key, true);
+                preview.addPreviewImage(newUrl);
+            }
+        }
+    }
 }
 
 document.body.addEventListener('click', event => {
@@ -166,19 +160,15 @@ async function handleSelectCeweImage(element) {
     // croppr.setImage(imageData.data.url);
     document.getElementById('selectedImage-name').innerText = imageData.data.name;
     document.getElementById('selectedImage-avgColor').innerText = imageData.data.avgColor;
+    document.getElementById('paddingColorInput').value = imageData.data.avgColor;
 
     // Load High-Resolution
     let highresolution = await cewe.fetchHighResolution(imageData.data.id);
 
-    if (outOfImageBox.classList.contains("d-none")) {
-        croppr.setImage(highresolution.url);
-    } else if (bildImBildBox.classList.contains("d-none")) {
-        croppr2.setImage(highresolution.url);
-    } else {
-        alert("critical croppr error.")
-    }
+    croppr.replace(highresolution.url);
 
     selectedImage = highresolution.url;
+    imageModal.hide();
 }
 
 async function downloadImage(selectedUrl, fileName) {
@@ -209,7 +199,7 @@ async function downloadImage(selectedUrl, fileName) {
 
     let url = window.URL.createObjectURL(imageData);
     a.href = url;
-    a.download = fileName + fileEnding;
+    a.download = fileName + '.' + fileEnding;
     a.click();
     window.URL.revokeObjectURL(url);
 }
@@ -221,13 +211,14 @@ function logout() {
     resetData();
 }
 
-function toggleLoginLogout() {
-    if (userNameField.classList.contains('d-none')) {
+function toggleLoginLogout(loggedIn) {
+    if (loggedIn) {
         userNameField.classList.remove('d-none');
         loginModalButton.innerText = 'Logout';
         loginModalButton.removeAttribute('data-bs-toggle');
         loginModalButton.removeAttribute('data-bs-target');
         loginModal.hide();
+        userNameField.innerHTML = cewe.getUsername();
     } else {
         userNameField.classList.add('d-none');
         loginModalButton.innerText = 'Login';
@@ -238,20 +229,31 @@ function toggleLoginLogout() {
 
 function resetData() {
     gallery.resetImages()
-    croppr.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
-    croppr2.setImage("https://cdn.syntaxphoenix.com/images/spigoticons/loginplus-logo.png");
+    croppr.replace("/build/img/default.webp");
 }
 
 bildImBildButton.addEventListener('click', () => {
-    bildImBildBox.classList.remove("d-none");
-    outOfImageBox.classList.add("d-none");
     effect = 'inside';
+    croppr.setAspectRatio(NaN);
+    bildImBildButton.classList.add('active');
+    outOfImageButton.classList.remove('active');
+    document.getElementById('settings_imi').classList.remove('d-none');
+    document.getElementById('settings_ofi').classList.add('d-none');
 })
 
 outOfImageButton.addEventListener('click', () => {
-    bildImBildBox.classList.add("d-none");
-    outOfImageBox.classList.remove("d-none");
     effect = 'outside';
-    croppr2.resizeTo(400, 400);
-    croppr2.moveTo(0, 0);
+    croppr.setAspectRatio(1);
+    bildImBildButton.classList.remove('active');
+    outOfImageButton.classList.add('active');
+    document.getElementById('settings_imi').classList.add('d-none');
+    document.getElementById('settings_ofi').classList.remove('d-none');
 })
+
+blurDisplay.innerHTML = rangeslider.value;
+
+rangeslider.oninput = function() {
+    rangesliderValue = this.value;
+    blurDisplay.innerHTML = this.value;
+}
+  

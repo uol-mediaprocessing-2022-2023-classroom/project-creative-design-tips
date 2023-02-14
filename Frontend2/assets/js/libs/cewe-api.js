@@ -1,4 +1,4 @@
-import { Gallery } from './../partials/gallery.js';
+import { Gallery } from './../libs/gallery.js';
 
 export async function loginUnused() {
 
@@ -194,7 +194,6 @@ export async function getBlur(selectedId, cldId, xStart, yStart, xEnd, yEnd) {
       .then((imageBlob) => {
         return URL.createObjectURL(imageBlob);
       });
-    console.log(blurImg);
     this.selectedImage.url = blurImg;
 }
 

@@ -6,6 +6,12 @@ import glob
 #import cv2
 #from libtiff import TIFF
 
+###############################
+# Disclaimer
+#
+# This file was initially created by https://github.com/zhixuhao/unet and not modified
+###############################
+
 class myAugmentation(object):
 	
 	"""
