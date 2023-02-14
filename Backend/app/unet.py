@@ -2,10 +2,9 @@ import os
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import numpy as np
 from keras.models import *
-from keras.layers import Input, concatenate, Conv2D, MaxPooling2D, UpSampling2D, Dropout, Cropping2D
+from keras.layers import Input, concatenate, Conv2D, MaxPooling2D, UpSampling2D, Dropout
 from keras.optimizers import *
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler
-from keras import backend as keras
+from keras.callbacks import ModelCheckpoint
 from app.data import *
 
 ###############################

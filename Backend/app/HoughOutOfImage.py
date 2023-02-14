@@ -1,11 +1,7 @@
-import sys
-import math
 import cv2 as cv
 import numpy as np
-from random import randrange
 from sympy import Point, Line 
 from PIL import Image
-import os
 
 class HoughOutOfImage(object):
 
