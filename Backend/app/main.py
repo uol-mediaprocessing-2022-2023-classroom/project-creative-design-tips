@@ -68,6 +68,8 @@ async def get_blur(background_tasks: BackgroundTasks, file: UploadFile, xStart: 
     background_tasks.add_task(remove_file, img_path)
     return FileResponse(img_path)
 
+# Endpoint for retrieving an out-of-image version of an image
+# The image is fetched from the URL in the post body and extended via Hough-Transformation or ai method, the result is returned
 @app.post("/get-outofimage/")
 async def get_ai_outofimage(background_tasks: BackgroundTasks, file: UploadFile, xStart: str = Form(...), yStart: str = Form(...), xEnd: str = Form(...), yEnd: str = Form(...), height: str = Form(...), type: str = Form(...)):
     img_path = 'app/bib/' + str(uuid.uuid4()) + ".png"
