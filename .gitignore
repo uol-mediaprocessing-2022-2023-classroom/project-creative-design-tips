@@ -4,3 +4,6 @@ DeepLearning/unet/results
 *.pyc
 .hdf5
 Backend/app/networks
+Backend/app/bib/*.png
+Backend/app/bib/*.jpg
+Backend/app/bib/*.gif

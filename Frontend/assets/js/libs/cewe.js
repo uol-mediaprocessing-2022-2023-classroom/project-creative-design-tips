@@ -16,7 +16,7 @@ class Cewe {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        clientVersion: "0.0.1-medienVerDemo",
+        clientVersion: "1.0.0-creative-design-tips",
         apiAccessKey: "6003d11a080ae5edf4b4f45481b89ce7",
       },
       body: JSON.stringify({

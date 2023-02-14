@@ -55,6 +55,7 @@ class Backend {
       return '/build/img/default.webp';
     }
   }
+
   async getOutOfImage(selectedUrl, xStart, yStart, xEnd, yEnd, height, type, muted) {
     try {
       let url = "http://127.0.0.1:8000/get-outofimage/";
